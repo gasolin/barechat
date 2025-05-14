@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "barechat": "./index.js"
+    "barechat": "./bin/main.sh"
   },
   "scripts": {
     "barechat": "bare index.js"

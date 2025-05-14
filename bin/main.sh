@@ -10,5 +10,12 @@ then
     exit 1
 fi
 
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Go up one directory to get the project root
+PROJECT_ROOT="$( dirname "$SCRIPT_DIR" )"
+# The index.js should be in the project root
+INDEX_PATH="$PROJECT_ROOT/barechat/index.js"
+
 # "$@" will pass any arguments given to the bin command
-bare index.js "$@"
+bare "$INDEX_PATH" "$@"

@@ -21,5 +21,11 @@
     "bare-tty": "^5.0.2",
     "hyperswarm": "^4.11.7",
     "hypercore-crypto": "^3.6.0"
-  }
+  },
+  "author": "Fred Lin <gasolin+barechat@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gasolin/barechat/issues"
+  },
+  "homepage": "https://github.com/gasolin/barechat"
 }

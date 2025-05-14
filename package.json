@@ -1,0 +1,25 @@
+{
+  "name": "barechat",
+  "version": "1.0.0",
+  "description": "Anonymous chat anywhere with commandline",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "barechat": "./index.js"
+  },
+  "scripts": {
+    "barechat": "bare index.js"
+  },
+  "files": [
+    "lib/",
+    "index.js"
+  ],
+  "dependencies": {
+    "b4a": "^1.6.7",
+    "bare-process": "^4.2.1",
+    "bare-readline": "^1.0.9",
+    "bare-tty": "^5.0.2",
+    "hyperswarm": "^4.11.7",
+    "hypercore-crypto": "^3.6.0"
+  }
+}

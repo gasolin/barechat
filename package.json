@@ -27,5 +27,11 @@
   "bugs": {
     "url": "https://github.com/gasolin/barechat/issues"
   },
-  "homepage": "https://github.com/gasolin/barechat"
+  "homepage": "https://github.com/gasolin/barechat",
+  "keywords": [
+    "bare",
+    "chat",
+    "terminal",
+    "holepunch"
+  ]
 }

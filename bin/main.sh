@@ -11,4 +11,4 @@ then
 fi
 
 # "$@" will pass any arguments given to the bin command
-bare ../index.js "$@"
+bare index.js "$@"

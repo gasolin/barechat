@@ -4,9 +4,7 @@ Anonymous chat anywhere with commandline
 
 ## Prerequisite
 
-Need bare runtime installed through npm.
-
-Could install globally using:
+Need bare runtime installed through npm. Could install globally using:
 
 `npm i -g bare`
 
@@ -21,7 +19,7 @@ To test this chat app, in one terminal run:
 [info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 ```
 
-In another terminal use the key received from the first terminal's output:
+In another terminal use the hashcode received from the first terminal's output:
 
 ```sh
 > npx barechat a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
@@ -47,7 +45,7 @@ To test this chat app, in one terminal run:
 [info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 ```
 
-In another terminal use the key received from the first terminal's output:
+In another terminal use the hashcode received from the first terminal's output:
 
 ```sh
 > bare index.js a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a

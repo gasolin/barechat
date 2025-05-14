@@ -1,4 +1,4 @@
-#!/bin/
+#!/bin/bash
 
 # Check if the bare command is available
 if ! command -v bare &> /dev/null

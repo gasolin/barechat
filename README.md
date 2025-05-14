@@ -23,18 +23,18 @@ npm install
 To test this chat app, in one terminal run:
 
 ```sh
-> npm run barechat
+> bare index.js
 [info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 ```
 
 In another terminal use the key received from the first terminal's output:
 
 ```sh
-> npm run barechat a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+> bare index.js a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 [info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 ```
 
-Now you can use the command `npm run barechat` to start your application.
+Now you can chat anonymously.
 
 ## Using as a Package
 

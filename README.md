@@ -4,13 +4,33 @@ Anonymous chat anywhere with commandline
 
 ## Prerequisite
 
-Need bare runtime installed
+Need bare runtime installed through npm.
 
 Could install globally using:
 
 `npm i -g bare`
 
-## Setup
+## Normal Usage with commandline
+
+Could install with command `npm i -g barechat` or run directly with `npx barechat`.
+
+To test this chat app, in one terminal run:
+
+```sh
+> npx barechat
+[info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+```
+
+In another terminal use the key received from the first terminal's output:
+
+```sh
+> npx barechat a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+[info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+```
+
+By anouncing the hashcode somewhere you can chat anonymously.
+
+## Clone and Setup
 
 Clone the repository or download it and navigate to the directory, then run:
 
@@ -34,9 +54,9 @@ In another terminal use the key received from the first terminal's output:
 [info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 ```
 
-Now you can chat anonymously.
+By anouncing the hashcode somewhere you can chat anonymously.
 
-## Using as a Package
+## Using BareChat as a Package
 
 You can also import `barechat` in your JavaScript files:
 

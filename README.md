@@ -84,3 +84,7 @@ const {
 ## Reference
 
 - Basically followed [Making a Pear Terminal Application](https://docs.pears.com/guides/making-a-pear-terminal-app) but built with bare and distill the reusable `chat-core`
+
+## License
+
+MIT

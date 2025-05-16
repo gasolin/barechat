@@ -14,6 +14,14 @@ const shouldCreateSwarm = !key      // Flag to determine if a new chat room shou
 // Initialize file store with provided path (or null if storage disabled)
 const fileStore = createFileStore(args.store)
 
+const {
+  swarm,
+  getMemberId,
+  createRoom,
+  joinRoom,
+  sendMessage
+} = getBackend()
+
 Bare
   .on('suspend', () => console.log('suspended'))
   .on('resume', () => console.log('resumed'))
@@ -22,14 +30,6 @@ Bare
     console.log('exited')
     swarm.destroy()
   })
-
-const {
-  swarm,
-  getMemberId,
-  createRoom,
-  joinRoom,
-  sendMessage
-} = getBackend()
 
 const rl = readline.createInterface({
   input: new tty.ReadStream(0),
@@ -91,7 +91,7 @@ async function joinChatRoom (topicStr) {
 function appendMessage ({ memberId, event }) {
   // Output chat msgs to terminal
   console.log(`[${memberId}] ${event?.message}`)
-  
+
   // Save message to log file using the fileStore
   if (fileStore.isEnabled()) {
     fileStore.saveMessage(memberId, event?.message)
@@ -101,10 +101,10 @@ function appendMessage ({ memberId, event }) {
 // Simple command-line argument parser
 function parseArgs(argv) {
   const result = { key: '', store: null }
-  
+
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
-    
+
     if (arg === '--store') {
       // Handle --store option without value (use default)
       if (i + 1 >= argv.length || argv[i + 1].startsWith('--')) {
@@ -123,6 +123,5 @@ function parseArgs(argv) {
       result.key = arg
     }
   }
-  
   return result
 }

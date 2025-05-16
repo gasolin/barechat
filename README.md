@@ -28,6 +28,18 @@ In another terminal use the hashcode received from the first terminal's output:
 
 By anouncing the hashcode somewhere you can chat anonymously.
 
+### Extra arguments
+
+If you want to record the log of this chat, can add `--store` argument to save chat into a text file.
+
+```sh
+# Store logs in default file (./barechat.txt)
+npx barechat --store
+
+# Store logs in specific file
+npx barechat --store /tmp/chatlog.txt
+```
+
 ## Clone and Setup
 
 Clone the repository or download it and navigate to the directory, then run:

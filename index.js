@@ -4,9 +4,15 @@ import tty from 'bare-tty'            // Module to control terminal behavior
 import process from 'bare-process'    // Process control for Bare
 
 import { getBackend } from './lib/chat-core'
+import { createFileStore } from './lib/file-store'
 
-const key = Bare.argv.length > 2 ? Bare.argv[2] : ''
+// Parse command line arguments
+const args = parseArgs(Bare.argv.slice(2))
+const key = args.key || ''
 const shouldCreateSwarm = !key      // Flag to determine if a new chat room should be created
+
+// Initialize file store with provided path (or null if storage disabled)
+const fileStore = createFileStore(args.store)
 
 Bare
   .on('suspend', () => console.log('suspended'))
@@ -52,6 +58,8 @@ if (shouldCreateSwarm) {
 rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
 rl.on('data', line => {
   sendMessage(line)
+  // Store own messages too
+  appendMessage({ memberId: 'me', event: { message: line } })
   rl.prompt()
 })
 rl.prompt()
@@ -64,6 +72,7 @@ async function createChatRoom () {
   const { done, topic } = await createRoom()
   if (done) {
     console.log(`[info] Created new chat room: ${topic}`)
+    fileStore.setupLogFile(topic)
   } else {
     console.log(`[info] Create fail`)
   }
@@ -73,6 +82,7 @@ async function joinChatRoom (topicStr) {
   const { done, topic } = await joinRoom(topicStr)
   if (done) {
     console.log(`[info] Joined chat room ${topic}`)
+    fileStore.setupLogFile(topic)
   } else {
     console.log(`[info] Joined fail`)
   }
@@ -81,4 +91,38 @@ async function joinChatRoom (topicStr) {
 function appendMessage ({ memberId, event }) {
   // Output chat msgs to terminal
   console.log(`[${memberId}] ${event?.message}`)
+  
+  // Save message to log file using the fileStore
+  if (fileStore.isEnabled()) {
+    fileStore.saveMessage(memberId, event?.message)
+  }
+}
+
+// Simple command-line argument parser
+function parseArgs(argv) {
+  const result = { key: '', store: null }
+  
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i]
+    
+    if (arg === '--store') {
+      // Handle --store option without value (use default)
+      if (i + 1 >= argv.length || argv[i + 1].startsWith('--')) {
+        result.store = './barechat.txt'
+      } else {
+        // Handle --store with value
+        result.store = argv[i + 1]
+        i++ // Skip the next argument as it's the value
+      }
+    } else if (arg.startsWith('--store=')) {
+      // Handle --store=path format
+      const value = arg.substring('--store='.length)
+      result.store = value || './barechat.txt'
+    } else if (!arg.startsWith('--') && !result.key) {
+      // First non-option argument is treated as the key
+      result.key = arg
+    }
+  }
+  
+  return result
 }

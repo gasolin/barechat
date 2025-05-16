@@ -16,11 +16,13 @@
   ],
   "dependencies": {
     "b4a": "^1.6.7",
+    "bare-fs": "^4.1.5",
+    "bare-path": "^3.0.0",
     "bare-process": "^4.2.1",
     "bare-readline": "^1.0.9",
     "bare-tty": "^5.0.2",
-    "hyperswarm": "^4.11.7",
-    "hypercore-crypto": "^3.6.0"
+    "hypercore-crypto": "^3.6.0",
+    "hyperswarm": "^4.11.7"
   },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",

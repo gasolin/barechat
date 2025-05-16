@@ -8,7 +8,7 @@
     "barechat": "bin/main.sh"
   },
   "scripts": {
-    "barechat": "bare index.js"
+    "start": "bare index.js"
   },
   "files": [
     "lib/",

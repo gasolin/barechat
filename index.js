@@ -39,7 +39,7 @@ const rl = readline.createInterface({
 // When there's a new connection, listen for new messages, and output them to the terminal
 swarm.on('connection', peer => {
   const memberId = getMemberId(peer)
-  console.log(`[info] New peer joined, ${memberId}`)
+  console.log(`[info] New peer ${memberId} joined`)
   peer.on('data', event => appendMessage({ memberId, event: JSON.parse(event) }))
   peer.on('error', e => console.log(`Connection error: ${e}`))
 })

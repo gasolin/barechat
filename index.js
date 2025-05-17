@@ -20,7 +20,7 @@ const {
   createRoom,
   joinRoom,
   sendMessage
-} = getBackend()
+} = getBackend(args)
 
 Bare
   .on('suspend', () => console.log('suspended'))

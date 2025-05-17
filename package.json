@@ -4,13 +4,12 @@
   "description": "Anonymous chat anywhere with commandline",
   "main": "index.js",
   "type": "module",
-  "bin": {
-    "barechat": "bin/main.js"
-  },
+  "bin": "bin/main.js",
   "scripts": {
     "start": "bare index.js"
   },
   "files": [
+    "bin/",
     "lib/",
     "index.js"
   ],

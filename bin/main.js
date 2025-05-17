@@ -3,11 +3,11 @@
 import shell from 'shelljs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { spawn } from 'child_process'
 
 // Get the directory of the current script in an ES module
 const __filename = fileURLToPath(import.meta.url)
-// Get the directory where this script is located
-// __dirname equivalent
+// Get the directory where this script is located, equivalent to __dirname
 const scriptDir = path.dirname(__filename)
 
 // Check if the bare command is available
@@ -28,12 +28,23 @@ const indexPath = path.join(projectRoot, 'index.js')
 // Pass any arguments given to the bin command to bare
 // process.argv[0] is node, process.argv[1] is the script path
 // We want to pass arguments starting from the third element
-const args = process.argv.slice(2).join(' ')
+const bareArgs = [indexPath, ...process.argv.slice(2)]; // Pass arguments as an array
+// console.log('>>> command:', bareArgs)
 
-// Execute the bare command
-// Use shell.exec with { fatal: true } to exit if the command fails
-// Use { async: true } and pipe stdout/stderr to inherit output
-const command = `bare "${indexPath}" ${args}`
+// Execute the bare command using child_process.spawn
+const bareProcess = spawn('bare', bareArgs, {
+  stdio: 'inherit', // This is crucial for TTY and readline to work
+  shell: true // Use shell: true to allow the command to be found in PATH
+})
 
-// Execute the command and inherit stdio
-shell.exec(command, { fatal: true, stdio: 'inherit' })
+// Handle process exit
+bareProcess.on('close', (code) => {
+  // Exit the parent process with the same code as the child process
+  process.exit(code);
+})
+
+// Handle errors during process spawning
+bareProcess.on('error', (err) => {
+  console.error(`Failed to start bare process: ${err}`)
+  process.exit(1); // Exit with error code
+})

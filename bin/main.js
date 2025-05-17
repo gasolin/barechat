@@ -22,8 +22,8 @@ if (!shell.which('bare')) {
 // Go up one directory to get the project root
 const projectRoot = path.dirname(scriptDir)
 
-// The index.js should be in the project root/barechat
-const indexPath = path.join(projectRoot, 'barechat', 'index.js')
+// The index.js should be in the project root
+const indexPath = path.join(projectRoot, 'index.js')
 
 // Pass any arguments given to the bin command to bare
 // process.argv[0] is node, process.argv[1] is the script path

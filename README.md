@@ -90,6 +90,8 @@ const {
 } = getBackend()
 ```
 
+Read chat-core API in [API](https://github.com/gasolin/barechat/blob/main/doc/api.md) doc
+
 ## Reference
 
 - Basically followed [Making a Pear Terminal Application](https://docs.pears.com/guides/making-a-pear-terminal-app) but built with bare and distill the reusable `chat-core`

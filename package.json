@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "barechat": "bin/main.sh"
+    "barechat": "bin/main.js"
   },
   "scripts": {
     "start": "bare index.js"
@@ -22,7 +22,8 @@
     "bare-readline": "^1.0.9",
     "bare-tty": "^5.0.2",
     "hypercore-crypto": "^3.6.0",
-    "hyperswarm": "^4.11.7"
+    "hyperswarm": "^4.11.7",
+    "shelljs": "^0.10.0"
   },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",

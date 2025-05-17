@@ -9,8 +9,6 @@ Anonymous chat anywhere with commandline
 - Can public a topic with hashcode, anyone with that hashcode can join the chat, even when the origin hoster left
 - With commandline UI, flexible to extend with other UI
 
-> See localhost web UI version in [barechat-web](https://github.com/gasolin/barechat-web)
-
 ## Prerequisite
 
 Need bare runtime installed through npm. Could install globally using:
@@ -36,6 +34,8 @@ In another terminal use the hashcode received from the first terminal's output:
 ```
 
 By anouncing the hashcode somewhere you can chat anonymously.
+
+> And its fully compatible to chat with [barechat-web](https://github.com/gasolin/barechat-web)
 
 ### Extra arguments
 
@@ -77,7 +77,7 @@ By anouncing the hashcode somewhere you can chat anonymously.
 
 ## Using BareChat as a Package
 
-You can also import `barechat` in your JavaScript files:
+To make varient chat experience, you can also import `barechat/lib/chat-core` in your project.
 
 ```js
 import { getBackend } from 'barechat/lib/chat-core'

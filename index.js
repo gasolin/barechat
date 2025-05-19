@@ -3,13 +3,13 @@ import readline from 'bare-readline'  // Module for reading user input in termin
 import tty from 'bare-tty'            // Module to control terminal behavior
 import process from 'bare-process'    // Process control for Bare
 
-import { getBackend } from './lib/chat-core'
+import { getBackend, parseArgs } from './lib/chat-core'
 import { createFileStore } from './lib/file-store'
 
 // Parse command line arguments
 const args = parseArgs(Bare.argv.slice(2))
-const key = args.key || ''
-const shouldCreateSwarm = !key      // Flag to determine if a new chat room should be created
+const topic = args.topic || ''
+const shouldCreateSwarm = !topic      // Flag to determine if a new chat room should be created
 
 // Initialize file store with provided path (or null if storage disabled)
 const fileStore = createFileStore(args.store)
@@ -52,7 +52,7 @@ swarm.on('update', () => {
 if (shouldCreateSwarm) {
   await createChatRoom()
 } else {
-  await joinChatRoom(key)
+  await joinChatRoom(topic)
 }
 
 rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
@@ -96,32 +96,4 @@ function appendMessage ({ memberId, event }) {
   if (fileStore.isEnabled()) {
     fileStore.saveMessage(memberId, event?.message)
   }
-}
-
-// Simple command-line argument parser
-function parseArgs(argv) {
-  const result = { key: '', store: null }
-
-  for (let i = 0; i < argv.length; i++) {
-    const arg = argv[i]
-
-    if (arg === '--store') {
-      // Handle --store option without value (use default)
-      if (i + 1 >= argv.length || argv[i + 1].startsWith('--')) {
-        result.store = './barechat.txt'
-      } else {
-        // Handle --store with value
-        result.store = argv[i + 1]
-        i++ // Skip the next argument as it's the value
-      }
-    } else if (arg.startsWith('--store=')) {
-      // Handle --store=path format
-      const value = arg.substring('--store='.length)
-      result.store = value || './barechat.txt'
-    } else if (!arg.startsWith('--') && !result.key) {
-      // First non-option argument is treated as the key
-      result.key = arg
-    }
-  }
-  return result
 }

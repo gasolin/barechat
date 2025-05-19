@@ -106,3 +106,40 @@ undefined.
 const { sendMessage } = getBackend();
 sendMessage("Hello everyone in the room!");
 ```
+
+## `parseArgs(argv)`
+
+Parses command-line arguments to extract a topic, an optional store path or an optional bootstrap string.
+
+**Parameters:**
+
+* `argv` (`string[]`): An array of command-line arguments, typically `process.argv`.
+
+**Returns:**
+
+* `{topic: string, store: string|null, bootstrap: string|null}`: An object containing the extracted params.
+    * `topic`: The first non-option argument found, or an empty string if none is present.
+    * `store`: The '--store' option can be followed by a path or use a default
+    path if no value is provided immediately after or if the value is another
+    option starting with '--'. It also supports the '--store=path' format
+    * The '--bootstrap' option expects a value immediately following it.
+
+**Examples:**
+
+```javascript
+// Example usage with typical Node.js process.argv: ['node', 'script.js', 'myTopic', '--store', '/path/to/store']
+const args1 = parseArgs(['node', 'script.js', 'myTopic', '--store', '/path/to/store']);
+console.log(args1); // Outputs: { topic: 'myTopic', store: '/path/to/store' }
+```
+
+Could run barechat in local network with some local DHT node(s)
+
+```
+❯ npx hyperdht --bootstrap --host [local ip] --port 55688
+```
+
+Then connect
+
+```
+> npx —barechat --bootstrap=192.168.0.123:55688
+```

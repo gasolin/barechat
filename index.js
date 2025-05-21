@@ -8,6 +8,7 @@ import { createFileStore, parseArgs } from './lib/helper'
 
 // Parse command line arguments
 const args = parseArgs(Bare.argv.slice(2))
+// console.log('args:', JSON.stringify(args))
 const topic = args.topic || ''
 const shouldCreateSwarm = !topic      // Flag to determine if a new chat room should be created
 

@@ -3,8 +3,8 @@ import readline from 'bare-readline'  // Module for reading user input in termin
 import tty from 'bare-tty'            // Module to control terminal behavior
 import process from 'bare-process'    // Process control for Bare
 
-import { getBackend, parseArgs } from './lib/chat-core'
-import { createFileStore } from './lib/file-store'
+import { getBackend } from './lib/chat-core'
+import { createFileStore, parseArgs } from './lib/helper'
 
 // Parse command line arguments
 const args = parseArgs(Bare.argv.slice(2))

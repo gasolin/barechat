@@ -24,6 +24,28 @@
     "hyperswarm": "^4.11.7",
     "shelljs": "^0.10.0"
   },
+  "imports": {
+    "fs": {
+      "bare": "bare-fs",
+      "default": "fs"
+    },
+    "path": {
+      "bare": "bare-path",
+      "default": "path"
+    },
+    "process": {
+      "bare": "bare-process",
+      "default": "process"
+    },
+    "readline": {
+      "bare": "bare-readline",
+      "default": "readline"
+    },
+    "tty": {
+      "bare": "bare-tty",
+      "default": "tty"
+    }
+  },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",
   "bugs": {

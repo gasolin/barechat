@@ -19,26 +19,11 @@ Initializes the networking layer and returns an object containing the core API f
     * `swarm` (Hyperswarm instance): The underlying Hyperswarm instance.
     * `version` (string): The version of the BareChat application.
 
-### `createRoom()`
+### `createRoom()` `Deprecated`
+
+> Use `joinRoom` instead
 
 Creates a new chat room with a randomly generated topic and joins the swarm.
-
-**Parameters:**
-
-* None.
-
-**Returns:**
-
-* `Promise<Object>`: A promise that resolves to an object with the following properties:
-    * `done` (boolean): Indicates if the swarm joining process is complete.
-    * `topic` (string): The hex-encoded topic of the newly created room.
-
-**Example:**
-
-```javascript
-const { createRoom } = getBackend();
-const room = await createRoom();
-console.log("Created room with topic:", room.topic);
 
 ### `getMemberId(peer)`
 
@@ -63,29 +48,32 @@ swarm.on('connection', (peer) => {
 
 ### `joinRoom(topicStr)`
 
-Joins an existing chat room using a provided topic string.
+Joins an existing chat room or creates a new one. If no topic is provided, generates a random topic.
+In P2P networks, joining a topic effectively creates it if it doesn't exist.
 
 **Parameters:**
 
-topicStr (string): The hex-encoded topic of the room to join.
+topicStr (string): Optional topic string (can be human-readable text, hex-encoded hash, or omitted for random)
 
 **Returns:**
 
 `Promise<Object>`: A promise that resolves to an object with the following properties:
 `done` (boolean): Indicates if the swarm joining process is complete.
-`topic` (string): The hex-encoded topic of the joined room, or an empty string or 'err' in case of an error.
+`topic` (string): The hex-encoded topic of the joined/created room, or an empty string or 'err' in case of an error.
 
 **Example:**
 
 ```javascript
-const { joinRoom } = getBackend();
-const roomToJoin = 'somehexencodedtopic';
-const room = await joinRoom(roomToJoin);
-if (room.done) {
-  console.log("Joined room with topic:", room.topic);
-} else {
-  console.error("Failed to join room.");
-}
+// Create room with random topic
+const randomRoom = await joinRoom()
+console.log("Joined/created random room:", randomRoom.topic)
+
+// Join/create room with human-readable name
+const namedRoom = await joinRoom('general-chat')
+console.log("Joined/created named room:", namedRoom.topic)
+
+// Join/create room with hex-encoded topic
+const hashRoom = await joinRoom('a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a')
 ```
 
 ### `sendMessage(message)`

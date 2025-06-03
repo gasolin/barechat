@@ -9,8 +9,6 @@ import { createFileStore, parseArgs } from './lib/helper'
 // Parse command line arguments
 const args = parseArgs(Bare.argv.slice(2))
 // console.log('args:', JSON.stringify(args))
-const topic = args.topic || ''
-const shouldCreateSwarm = !topic      // Flag to determine if a new chat room should be created
 
 // Initialize file store with provided path (or null if storage disabled)
 const fileStore = createFileStore(args.store)
@@ -18,7 +16,6 @@ const fileStore = createFileStore(args.store)
 const {
   swarm,
   getMemberId,
-  createRoom,
   joinRoom,
   sendMessage
 } = getBackend(args)
@@ -50,11 +47,8 @@ swarm.on('update', () => {
   console.log(`[info] Number of connections is now ${swarm.connections.size}`)
 })
 
-if (shouldCreateSwarm) {
-  await createChatRoom()
-} else {
-  await joinChatRoom(topic)
-}
+// create or join with a topic
+await joinChatRoom(args.topic || '')
 
 rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
 rl.on('data', line => {
@@ -68,16 +62,6 @@ rl.prompt()
 rl.on('close', () => {
   process.kill(process.pid, 'SIGINT')
 })
-
-async function createChatRoom () {
-  const { done, topic } = await createRoom()
-  if (done) {
-    console.log(`[info] Created new chat room: ${topic}`)
-    fileStore.setupLogFile(topic)
-  } else {
-    console.log(`[info] Create fail`)
-  }
-}
 
 async function joinChatRoom (topicStr) {
   const { done, topic } = await joinRoom(topicStr)

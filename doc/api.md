@@ -1,133 +1,161 @@
-## Barechat chat-core API
+## Constants
 
-### `getBackend(opts)`
+<dl>
+<dt><a href="#getBackend">getBackend</a> ⇒ <code>Object</code></dt>
+<dd><p>Initializes the networking layer and returns an object containing the core API functions for interacting with the chat swarm</p>
+</dd>
+</dl>
 
-Initializes the networking layer and returns an object containing the core API functions for interacting with the chat swarm.
+## Functions
 
-**Parameters:**
+<dl>
+<dt><a href="#getSwarm">getSwarm([opts])</a> ⇒ <code>Hyperswarm</code></dt>
+<dd><p>Creates a Hyperswarm instance with optional bootstrap configuration</p>
+</dd>
+<dt><a href="#isHashcode">isHashcode(str)</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if a string is a valid 64-character hexadecimal hash (32 bytes)</p>
+</dd>
+<dt><a href="#strToTopic">strToTopic(topicStr)</a> ⇒ <code>string</code></dt>
+<dd><p>Converts a string to a topic buffer. If the string is already a valid hashcode,
+returns it as-is. Otherwise, creates a SHA256 hash of the string.</p>
+</dd>
+<dt><a href="#getMemberId">getMemberId(peer)</a> ⇒ <code>string</code></dt>
+<dd><p>Generates a short, human-readable identifier for a peer based on their remote public key</p>
+</dd>
+<dt><a href="#joinRoom">joinRoom(swarm)</a> ⇒ <code>function</code></dt>
+<dd><p>Joins or creates a chat room for the specified topic</p>
+</dd>
+<dt><a href="#sendMessage">sendMessage(swarm)</a> ⇒ <code>function</code></dt>
+<dd><p>Sends a message to all peers currently connected in the swarm</p>
+</dd>
+</dl>
 
-* `opts` (Object, optional): Configuration options for the Hyperswarm instance.
-    * `bootstrap` (Array<string>, optional): A list of bootstrap servers to use for discovering peers.
+<a name="getBackend"></a>
 
-**Returns:**
+## getBackend ⇒ <code>Object</code>
+Initializes the networking layer and returns an object containing the core API functions for interacting with the chat swarm
 
-* `Object`: An object containing the following properties and functions:
-    * `createRoom` (Function): See [`createRoom()`](#createroom)
-    * `getMemberId` (Function): See [`getMemberId(peer)`](#getmemberidpeer)
-    * `joinRoom` (Function): See [`joinRoom(topicStr)`](#joinroomtopicstr)
-    * `sendMessage` (Function): See [`sendMessage(message)`](#sendmessagemessage)
-    * `swarm` (Hyperswarm instance): The underlying Hyperswarm instance.
-    * `version` (string): The version of the BareChat application.
+**Kind**: global constant  
+**Returns**: <code>Object</code> - An object containing core API functions and properties  
 
-### `createRoom()` `Deprecated`
+| Param | Type | Description |
+| --- | --- | --- |
+| [opts] | <code>Object</code> | Configuration options for the Hyperswarm instance |
+| [opts.bootstrap] | <code>Array.&lt;string&gt;</code> | A list of bootstrap servers to use for discovering peers |
 
-> Use `joinRoom` instead
+**Properties**
 
-Creates a new chat room with a randomly generated topic and joins the swarm.
+| Name | Type | Description |
+| --- | --- | --- |
+| createRoom | <code>function</code> | Creates a new chat room (alias for joinRoom for backward compatibility) |
+| getMemberId | <code>function</code> | Generates a short identifier for a peer |
+| joinRoom | <code>function</code> | Joins an existing chat room using a topic string |
+| sendMessage | <code>function</code> | Sends a message to all connected peers |
+| strToTopic | <code>function</code> | Converts a string to a valid topic hash |
+| isHashcode | <code>function</code> | Validates if a string is a valid 64-character hex hash |
+| swarm | <code>Hyperswarm</code> | The underlying Hyperswarm instance |
+| version | <code>string</code> | The version of the BareChat application |
 
-### `getMemberId(peer)`
+**Example**  
+```js
+const backend = getBackend({ bootstrap: ['192.168.0.123:55688'] });
+const room = await backend.joinRoom();
+backend.sendMessage("Hello world!");
+```
+<a name="getSwarm"></a>
 
-Generates a short, human-readable identifier for a peer based on their remote public key.
+## getSwarm([opts]) ⇒ <code>Hyperswarm</code>
+Creates a Hyperswarm instance with optional bootstrap configuration
 
-**Parameters:**
+**Kind**: global function  
+**Returns**: <code>Hyperswarm</code> - Configured Hyperswarm instance  
 
-peer (Object): The peer object from the Hyperswarm connection.
+| Param | Type | Description |
+| --- | --- | --- |
+| [opts] | <code>Object</code> | Configuration options |
+| [opts.bootstrap] | <code>Array.&lt;string&gt;</code> | Array of bootstrap servers for peer discovery |
 
-**Returns:**
+<a name="isHashcode"></a>
 
-* `string`: A 6-character hex string representing the member ID, or 'invalid' if the peer object is not valid.
+## isHashcode(str) ⇒ <code>boolean</code>
+Checks if a string is a valid 64-character hexadecimal hash (32 bytes)
 
-**Example:**
+**Kind**: global function  
+**Returns**: <code>boolean</code> - True if the string is a valid 64-character hex string  
 
-```javascript
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>string</code> | The string to validate |
+
+**Example**  
+```js
+isHashcode('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089') // true
+isHashcode('hello world') // false
+isHashcode('abc123') // false (too short)
+```
+<a name="strToTopic"></a>
+
+## strToTopic(topicStr) ⇒ <code>string</code>
+Converts a string to a topic buffer. If the string is already a valid hashcode,
+returns it as-is. Otherwise, creates a SHA256 hash of the string.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - A 64-character hex string representing the topic  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| topicStr | <code>string</code> | The topic string to convert |
+
+**Example**  
+```js
+// Using an existing hash
+strToTopic('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089')
+// Returns: 'eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089'
+
+// Converting a readable string
+strToTopic('my-chat-room')
+// Returns: SHA256 hash of 'my-chat-room' as hex string
+```
+<a name="getMemberId"></a>
+
+## getMemberId(peer) ⇒ <code>string</code>
+Generates a short, human-readable identifier for a peer based on their remote public key
+
+**Kind**: global function  
+**Returns**: <code>string</code> - A 6-character hex string representing the member ID, or 'invalid' if the peer object is not valid  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| peer | <code>Object</code> | The peer object from the Hyperswarm connection |
+
+**Example**  
+```js
 swarm.on('connection', (peer) => {
   const memberId = getMemberId(peer);
   console.log("New peer connected with ID:", memberId);
 });
 ```
+<a name="joinRoom"></a>
 
-### `joinRoom(topicStr)`
+## joinRoom(swarm) ⇒ <code>function</code>
+Joins or creates a chat room for the specified topic
 
-Joins an existing chat room or creates a new one. If no topic is provided, generates a random topic.
-In P2P networks, joining a topic effectively creates it if it doesn't exist.
+**Kind**: global function  
+**Returns**: <code>function</code> - An async function that joins/creates a room  
 
-**Parameters:**
+| Param | Type | Description |
+| --- | --- | --- |
+| swarm | <code>Hyperswarm</code> | The Hyperswarm instance to use |
 
-topicStr (string): Optional topic string (can be human-readable text, hex-encoded hash, or omitted for random)
+<a name="sendMessage"></a>
 
-**Returns:**
+## sendMessage(swarm) ⇒ <code>function</code>
+Sends a message to all peers currently connected in the swarm
 
-`Promise<Object>`: A promise that resolves to an object with the following properties:
-`done` (boolean): Indicates if the swarm joining process is complete.
-`topic` (string): The hex-encoded topic of the joined/created room, or an empty string or 'err' in case of an error.
+**Kind**: global function  
+**Returns**: <code>function</code> - A function that sends messages  
 
-**Example:**
+| Param | Type | Description |
+| --- | --- | --- |
+| swarm | <code>Hyperswarm</code> | The Hyperswarm instance to use |
 
-```javascript
-// Create room with random topic
-const randomRoom = await joinRoom()
-console.log("Joined/created random room:", randomRoom.topic)
-
-// Join/create room with human-readable name
-const namedRoom = await joinRoom('general-chat')
-console.log("Joined/created named room:", namedRoom.topic)
-
-// Join/create room with hex-encoded topic
-const hashRoom = await joinRoom('a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a')
-```
-
-### `sendMessage(message)`
-
-Sends a message to all peers currently connected in the swarm.
-
-**Parameters:**
-
-`message (string)`: The message content to send.
-
-**Returns:**
-
-undefined.
-
-**Example:**
-
-```javascript
-const { sendMessage } = getBackend();
-sendMessage("Hello everyone in the room!");
-```
-
-## `parseArgs(argv)`
-
-Parses command-line arguments to extract a topic, an optional store path or an optional bootstrap string.
-
-**Parameters:**
-
-* `argv` (`string[]`): An array of command-line arguments, typically `process.argv`.
-
-**Returns:**
-
-* `{topic: string, store: string|null, bootstrap: string|null}`: An object containing the extracted params.
-    * `topic`: The first non-option argument found, or an empty string if none is present.
-    * `store`: The '--store' option can be followed by a path or use a default
-    path if no value is provided immediately after or if the value is another
-    option starting with '--'. It also supports the '--store=path' format
-    * The '--bootstrap' option expects a value immediately following it.
-
-**Examples:**
-
-```javascript
-// Example usage with typical Node.js process.argv: ['node', 'script.js', 'myTopic', '--store', '/path/to/store']
-const args1 = parseArgs(['node', 'script.js', 'myTopic', '--store', '/path/to/store']);
-console.log(args1); // Outputs: { topic: 'myTopic', store: '/path/to/store' }
-```
-
-Could run barechat in local network with some local DHT node(s)
-
-```
-❯ npx hyperdht --bootstrap --host [local ip] --port 55688
-```
-
-Then connect
-
-```
-> npx —barechat --bootstrap=192.168.0.123:55688
-```

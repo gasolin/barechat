@@ -6,7 +6,8 @@
   "type": "module",
   "bin": "bin/main.js",
   "scripts": {
-    "start": "bare index.js"
+    "start": "bare index.js",
+    "doc": "npx jsdoc-to-markdown ./lib/chat-core.js > doc/api.md"
   },
   "files": [
     "bin/",

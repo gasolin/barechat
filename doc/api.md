@@ -54,7 +54,7 @@ Initializes the networking layer and returns an object containing the core API f
 | strToTopic | <code>function</code> | Converts a string to a valid topic hash |
 | isHashcode | <code>function</code> | Validates if a string is a valid 64-character hex hash |
 | swarm | <code>Hyperswarm</code> | The underlying Hyperswarm instance |
-| version | <code>string</code> | The version of the BareChat application |
+| version | <code>string</code> | The version of the BareChat package |
 
 **Example**  
 ```js

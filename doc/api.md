@@ -1,6 +1,9 @@
 ## Constants
 
 <dl>
+<dt><a href="#createMessage">createMessage</a> ⇒ <code>object</code></dt>
+<dd><p>Creates a message object.</p>
+</dd>
 <dt><a href="#getBackend">getBackend</a> ⇒ <code>Object</code></dt>
 <dd><p>Initializes the networking layer and returns an object containing the core API functions for interacting with the chat swarm</p>
 </dd>
@@ -29,6 +32,28 @@ returns it as-is. Otherwise, creates a SHA256 hash of the string.</p>
 <dd><p>Sends a message to all peers currently connected in the swarm</p>
 </dd>
 </dl>
+
+<a name="createMessage"></a>
+
+## createMessage ⇒ <code>object</code>
+Creates a message object.
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - A message object with a timestamp, message content, local flag, and type.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| msg | <code>string</code> |  | The content of the message. |
+| [local] | <code>boolean</code> | <code>false</code> | Indicates whether the message is send from a local device.   Defaults to `false`. |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| timestamp | <code>Date</code> | The date and time the message was created. |
+| message | <code>string</code> | The content of the message. |
+| local | <code>boolean</code> | Indicates if the message is send from a local device. |
+| type | <code>string</code> | The type of the message. Defaults to `text` |
 
 <a name="getBackend"></a>
 

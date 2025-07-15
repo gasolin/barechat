@@ -2,6 +2,11 @@
 
 Anonymous chat anywhere with commandline
 
+|project |version |
+|--------|--------|
+| terminal (this) | ![NPM Version](https://img.shields.io/npm/v/barechat) |
+| web | ![NPM Version](https://img.shields.io/npm/v/barechat-web) |
+
 ## Features
 
 - IRC like anonymous chat, fully p2p, no server required

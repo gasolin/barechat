@@ -1,6 +1,6 @@
 {
   "name": "barechat",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Anonymous chat anywhere with commandline",
   "main": "index.js",
   "type": "module",
@@ -15,15 +15,15 @@
     "index.js"
   ],
   "dependencies": {
-    "b4a": "^1.6.7",
-    "bare-crypto": "^1.4.5",
-    "bare-fs": "^4.1.5",
+    "b4a": "^1.7.2",
+    "bare-crypto": "^1.11.2",
+    "bare-fs": "^4.4.4",
     "bare-path": "^3.0.0",
     "bare-process": "^4.2.1",
-    "bare-readline": "^1.0.9",
-    "bare-tty": "^5.0.2",
-    "hypercore-crypto": "^3.6.0",
-    "hyperswarm": "^4.11.7",
+    "bare-readline": "^1.1.0",
+    "bare-tty": "^5.0.3",
+    "hypercore-crypto": "^3.6.1",
+    "hyperswarm": "^4.14.0",
     "shelljs": "^0.10.0"
   },
   "imports": {

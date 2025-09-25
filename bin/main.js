@@ -19,6 +19,34 @@ if (!shell.which('bare')) {
   shell.exit(1)
 }
 
+// Check bare version
+const versionResult = shell.exec('bare -v', { silent: true })
+if (versionResult.code !== 0) {
+  shell.echo('Error: Could not get bare version.')
+  shell.exit(1)
+}
+
+// Parse version string (remove 'v' prefix and convert to number for comparison)
+const versionString = versionResult.stdout.trim()
+const version = versionString.replace(/^v/, '') // Remove 'v' prefix
+const versionParts = version.split('.').map(Number)
+const [major, minor, patch] = versionParts
+// console.log('>>> ', version, major, minor, patch)
+
+// Check if version is greater than 1.21
+const requiredMajor = 1
+const requiredMinor = 21
+
+const isVersionValid = major > requiredMajor || (major === requiredMajor && minor > requiredMinor)
+
+if (!isVersionValid) {
+  shell.echo(`Error: bare version ${versionString} is too old.`)
+  shell.echo(`Required bare > v${requiredMajor}.${requiredMinor}`)
+  shell.echo('Please update bare globally using npm:')
+  shell.echo('npm i -g bare')
+  shell.exit(1)
+}
+
 // Go up one directory to get the project root
 const projectRoot = path.dirname(scriptDir)
 
@@ -34,7 +62,7 @@ const bareArgs = [indexPath, ...process.argv.slice(2)]; // Pass arguments as an 
 // Execute the bare command using child_process.spawn
 const bareProcess = spawn('bare', bareArgs, {
   stdio: 'inherit', // This is crucial for TTY and readline to work
-  shell: true // Use shell: true to allow the command to be found in PATH
+  // shell: true // Use shell: true to allow the command to be found in PATH
 })
 
 // Handle process exit

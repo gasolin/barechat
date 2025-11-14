@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "bun run build --filter=*",
-    "dev": "bun run dev --filter=*",
+    "dev:all": "bun run dev --filter=*",
     "test": "bun run test --filter=*",
     "lint": "bun run lint --filter=*",
     "clean": "bun run clean --filter=*",

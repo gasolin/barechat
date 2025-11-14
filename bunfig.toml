@@ -1,0 +1,26 @@
+# Bun configuration for barechat monorepo
+
+[install]
+# Enable workspaces for monorepo support
+workspaces = true
+
+# Cache configuration
+cache = true
+cache-dir = ".bun-cache"
+
+[run]
+# Use bun's fast runtime
+bun = true
+
+[test]
+# Test configuration
+preload = ["./test/setup.ts"]
+
+[build]
+# Build configuration
+target = "bun"
+minify = false
+
+[define]
+# Environment variables
+NODE_ENV = "development"

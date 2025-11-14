@@ -1,59 +1,37 @@
 {
-  "name": "barechat",
+  "name": "barechat-monorepo",
   "version": "2.0.2",
-  "description": "Anonymous chat anywhere with commandline",
-  "main": "index.js",
+  "description": "Anonymous chat anywhere with commandline - Monorepo",
   "type": "module",
-  "bin": "bin/main.js",
-  "scripts": {
-    "start": "bare index.js",
-    "doc": "npx jsdoc-to-markdown ./lib/chat-core.js > doc/api.md"
-  },
-  "files": [
-    "bin/",
-    "lib/",
-    "index.js"
+  "workspaces": [
+    "packages/*"
   ],
-  "dependencies": {
-    "b4a": "^1.7.2",
-    "bare-crypto": "^1.11.2",
-    "bare-fs": "^4.4.4",
-    "bare-path": "^3.0.0",
-    "bare-process": "^4.2.1",
-    "bare-readline": "^1.1.0",
-    "bare-tty": "^5.0.3",
-    "hypercore-crypto": "^3.6.1",
-    "hyperswarm": "^4.14.0",
-    "shelljs": "^0.10.0"
+  "scripts": {
+    "build": "bun run build --filter=*",
+    "dev": "bun run dev --filter=*",
+    "test": "bun run test --filter=*",
+    "lint": "bun run lint --filter=*",
+    "clean": "bun run clean --filter=*",
+    "cli": "bun run --filter=barechat",
+    "cli:start": "bun run --filter=barechat start",
+    "cli:dev": "bun dev.js",
+    "doc": "bun run --filter=barechat doc && echo 'Documentation generated in doc/api.md'",
+    "publish:cli": "bun run --filter=barechat publish",
+    "publish:cli:dry-run": "bun run --filter=barechat publish --dry-run"
   },
-  "imports": {
-    "crypto": {
-      "bare": "bare-crypto",
-      "default": "crypto"
-    },
-    "fs": {
-      "bare": "bare-fs",
-      "default": "fs"
-    },
-    "path": {
-      "bare": "bare-path",
-      "default": "path"
-    },
-    "process": {
-      "bare": "bare-process",
-      "default": "process"
-    },
-    "readline": {
-      "bare": "bare-readline",
-      "default": "readline"
-    },
-    "tty": {
-      "bare": "bare-tty",
-      "default": "tty"
-    }
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gasolin/barechat.git"
+  },
   "bugs": {
     "url": "https://github.com/gasolin/barechat/issues"
   },
@@ -62,6 +40,11 @@
     "bare",
     "chat",
     "terminal",
-    "holepunch"
-  ]
+    "holepunch",
+    "p2p",
+    "monorepo"
+  ],
+  "engines": {
+    "bun": ">=1.0.0"
+  }
 }

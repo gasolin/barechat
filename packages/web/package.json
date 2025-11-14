@@ -1,0 +1,51 @@
+{
+  "name": "barechat-web",
+  "version": "2.0.2",
+  "description": "Anonymous chat anywhere with localhost web interface - Web Package",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "bare index.js",
+    "dev": "bare index.js",
+    "clean": "rm -rf node_modules dist",
+    "build": "echo 'No build step required for JavaScript'",
+    "test": "echo 'No tests specified yet'"
+  },
+  "files": [
+    "lib/",
+    "ui/",
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "author": "Fred Lin <gasolin+barechat@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gasolin/barechat/issues"
+  },
+  "homepage": "https://github.com/gasolin/barechat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gasolin/barechat.git",
+    "directory": "packages/web"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "bare-http1": "^4.1.0",
+    "bare-process": "^4.2.1",
+    "bare-ws": "^2.0.3",
+    "barechat": "^2.0.3"
+  },
+  "imports": {
+    "http": {
+      "bare": "bare-http1",
+      "default": "http"
+    },
+    "process": {
+      "bare": "bare-process",
+      "default": "process"
+    }
+  }
+}

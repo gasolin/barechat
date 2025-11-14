@@ -4,8 +4,8 @@ Anonymous chat anywhere with commandline
 
 |project |version |
 |--------|--------|
-| terminal (this) | ![NPM Version](https://img.shields.io/npm/v/barechat) |
-| web | ![NPM Version](https://img.shields.io/npm/v/barechat-web) |
+| [terminal](https://www.npmjs.com/package/barechat) (this) | ![NPM Version](https://img.shields.io/npm/v/barechat) |
+| [web](https://www.npmjs.com/package/barechat-web) | ![NPM Version](https://img.shields.io/npm/v/barechat-web) |
 
 ## Features
 
@@ -27,20 +27,27 @@ Could install with command `npm i -g barechat` or run directly with `npx barecha
 To test this chat app, in one terminal run:
 
 ```sh
-> npx barechat
-[info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+> npx barechat soccer
+[info] Created new chat room: 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 ```
 
-In another terminal use the hashcode received from the first terminal's output:
+You can send `soccer`, `p2p` or any string you like to discover the room.
+
+In another terminal use the same command, or the hashcode received from the first terminal's output:
 
 ```sh
-> npx barechat a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
-[info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+> npx barechat 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
+[info] Joined chat room 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 ```
 
-By anouncing the hashcode somewhere you can chat anonymously.
-
 > And its fully compatible to chat with [barechat-web](https://github.com/gasolin/barechat-web)
+
+
+Or you can simply call
+
+> npx barechat
+
+Which will randomly generate a room with hashcode. By anouncing the hashcode somewhere you can chat anonymously.
 
 ### Extra arguments
 
@@ -76,7 +83,7 @@ npm run doc
 
 ## Using BareChat as a Package
 
-To make varient chat experience, you can also import `barechat/lib/chat-core` in your project.
+To make variant chat experience, you can also import `barechat/lib/chat-core` in your project.
 
 ```js
 import { getBackend } from 'barechat/lib/chat-core'

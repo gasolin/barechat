@@ -4,7 +4,7 @@ Anonymous chat anywhere with commandline
 
 ## 📦 Packages
 
-This monorepo contains the following packages:
+This monorepo contains following packages:
 
 ### `barechat` (packages/cli)
 The main CLI application for BareChat - an anonymous, peer-to-peer chat terminal application.
@@ -12,6 +12,13 @@ The main CLI application for BareChat - an anonymous, peer-to-peer chat terminal
 - **Features**: IRC like anonymous chat, fully p2p, no server required
 - **Installation**: `npm i -g barechat` or `bun add -g barechat`
 - **Usage**: `barechat` or `barechat <topic-hash>`
+
+### `barechat-web` (packages/web)
+Web interface for BareChat - provides a localhost web UI for anonymous P2P chat.
+
+- **Features**: Web-based chat interface, fully p2p, no server required
+- **Installation**: `npm i -g barechat-web` or `bun add -g barechat-web`
+- **Usage**: `barechat-web` or `barechat-web <topic-hash>`
 
 ## 🚀 Quick Start
 
@@ -91,6 +98,9 @@ bun run cli
 # Start the CLI application
 bun run cli:start
 
+# Start the Web application
+bun run web:start
+
 # Generate documentation
 bun run doc
 ```
@@ -100,11 +110,15 @@ bun run doc
 ```bash
 # Run commands for a specific package
 bun run --filter=barechat <command>
+bun run --filter=barechat-web <command>
 
-# Example: run the CLI package in development mode
+# Example: run CLI package in development mode
 bun run --filter=barechat dev
 
-# Example: generate docs for the CLI package
+# Example: run Web package in development mode
+bun run --filter=barechat-web dev
+
+# Example: generate docs for CLI package
 bun run --filter=barechat doc
 ```
 
@@ -113,10 +127,15 @@ bun run --filter=barechat doc
 ```
 barechat/
 ├── packages/
-│   └── cli/                 # Main CLI application
-│       ├── bin/            # Executable scripts
-│       ├── lib/            # Core library files
-│       ├── openspec/        # OpenSpec specifications
+│   ├── cli/                 # Main CLI application
+│   │   ├── bin/            # Executable scripts
+│   │   ├── lib/            # Core library files
+│   │   ├── openspec/        # OpenSpec specifications
+│   │   ├── index.js        # Main entry point
+│   │   └── package.json    # Package configuration
+│   └── web/                 # Web interface application
+│       ├── lib/            # Server and WebSocket logic
+│       ├── ui/             # Web UI components
 │       ├── index.js        # Main entry point
 │       └── package.json    # Package configuration
 ├── doc/                    # Documentation

@@ -15,9 +15,14 @@
     "cli": "bun run --filter=barechat",
     "cli:start": "bun run --filter=barechat start",
     "cli:dev": "bun dev.js",
+    "web": "bun run --filter=barechat-web",
+    "web:start": "bun run --filter=barechat-web start",
+    "web:dev": "bun run --filter=barechat-web dev",
     "doc": "bun run --filter=barechat doc && echo 'Documentation generated in doc/api.md'",
     "publish:cli": "bun run --filter=barechat publish",
-    "publish:cli:dry-run": "bun run --filter=barechat publish --dry-run"
+    "publish:cli:dry-run": "bun run --filter=barechat publish --dry-run",
+    "publish:web": "bun run --filter=barechat-web publish",
+    "publish:web:dry-run": "bun run --filter=barechat-web publish --dry-run"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,0 +1,36 @@
+{
+  "name": "barechat-rpc",
+  "version": "0.0.1",
+  "description": "Terminal-to-terminal communication using bare-rpc",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "server": "bare index.js server",
+    "client": "bare index.js client"
+  },
+  "dependencies": {
+    "bare-rpc": "^1.0.0",
+    "bare-net": "^1.0.0",
+    "bare-fs": "^2.0.0",
+    "bare-path": "^2.0.0",
+    "bare-process": "^4.2.1",
+    "bare-os": "^2.0.0"
+  },
+  "keywords": [
+    "bare",
+    "rpc",
+    "ipc",
+    "terminal",
+    "communication"
+  ],
+  "author": "Fred Lin <gasolin+barechat@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gasolin/barechat.git",
+    "directory": "packages/rpc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -7,6 +7,7 @@ BareChat is an anonymous, peer-to-peer chat application that enables users to cr
 This is a Bun-based monorepo containing:
 - **packages/cli**: Terminal-based BareChat application (original implementation)
 - **packages/web**: Web-based interface with WebSocket bridge
+- **packages/rpc**: Terminal-to-terminal communication using bare-rpc
 - **packages/core**: (Future) Shared P2P networking logic
 - **packages/ui**: (Future) Shared UI components
 
@@ -129,6 +130,14 @@ This is a Bun-based monorepo containing:
 - **bare-readline**: Terminal input handling
 - **bare-tty**: Terminal control
 
+### RPC Package Dependencies
+- **bare-rpc**: RPC protocol implementation for IPC
+- **bare-net**: Network socket support for Unix domain sockets
+- **bare-fs**: File system operations for socket management
+- **bare-path**: Path manipulation for socket paths
+- **bare-process**: Process control and signal handling
+- **bare-os**: OS utilities for temporary directory access
+
 ### Web Package Dependencies
 - **ws**: WebSocket implementation for server-client communication
 - **barechat**: CLI package for P2P networking functionality
@@ -145,3 +154,4 @@ This is a Bun-based monorepo containing:
 ## Package-Specific Documentation
 - **CLI Package**: See `openspec/packages/cli/project.md` for CLI-specific details
 - **Web Package**: See `openspec/packages/web/project.md` for web-specific details
+- **RPC Package**: See `openspec/specs/rpc/spec.md` and `openspec/specs/rpc/design.md` for RPC-specific details

@@ -2,11 +2,10 @@
   "name": "barechat-rpc",
   "version": "0.0.1",
   "description": "Terminal-to-terminal communication using bare-rpc",
-  "main": "index.js",
+  "main": "lib/rpc.js",
   "type": "module",
   "bin": {
-    "server": "bare index.js server",
-    "client": "bare index.js client"
+    "barechat-rpc": "index.js"
   },
   "dependencies": {
     "bare-rpc": "^1.0.0",

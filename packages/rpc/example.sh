@@ -25,7 +25,7 @@ run_server() {
     echo -e "${GREEN}[SERVER]${NC} Starting RPC server..."
     echo -e "${YELLOW}Note: Keep this terminal open${NC}"
     echo ""
-    bare rpc.js server
+    bare index.js server
 }
 
 # Function to run client with multiple test messages
@@ -35,7 +35,7 @@ run_client_tests() {
     
     echo ""
     echo -e "${BLUE}[CLIENT TEST 1]${NC} Sending: 'Hello from Terminal 2!'"
-    bare rpc.js client "Hello from Terminal 2!"
+    bare index.js client "Hello from Terminal 2!"
     
     echo ""
     echo "----------------------------------------"
@@ -43,7 +43,7 @@ run_client_tests() {
     
     echo ""
     echo -e "${BLUE}[CLIENT TEST 2]${NC} Sending: 'Testing bare-rpc communication'"
-    bare rpc.js client "Testing bare-rpc communication"
+    bare index.js client "Testing bare-rpc communication"
     
     echo ""
     echo "----------------------------------------"
@@ -51,7 +51,7 @@ run_client_tests() {
     
     echo ""
     echo -e "${BLUE}[CLIENT TEST 3]${NC} Sending: 'This is message number 3'"
-    bare rpc.js client "This is message number 3"
+    bare index.js client "This is message number 3"
     
     echo ""
     echo "----------------------------------------"
@@ -66,7 +66,7 @@ run_client_interactive() {
     read -p "> " message
     
     while [ "$message" != "quit" ]; do
-        bare rpc.js client "$message"
+        bare index.js client "$message"
         echo ""
         echo "Type your message (or 'quit' to exit):"
         read -p "> " message
@@ -100,7 +100,7 @@ case $choice in
         echo ""
         
         # Start server in background
-        bare rpc.js server &
+        bare index.js server &
         SERVER_PID=$!
         
         # Run client tests

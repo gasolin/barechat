@@ -1,5 +1,8 @@
 # RPC Communication
 
+## Purpose
+Provide terminal-to-terminal communication using Unix domain sockets and bare-rpc protocol, enabling inter-process communication between different BareChat terminal instances on the same system.
+
 ## Requirements
 
 ### Requirement: Terminal-to-Terminal Communication

@@ -5,6 +5,7 @@ import process from 'process'    // Process control for Bare
 
 import { getBackend } from './lib/chat-core'
 import { createFileStore, parseArgs } from './lib/helper'
+import { RPCServer } from './lib/rpc-server'
 
 // Parse command line arguments
 const args = parseArgs(Bare.argv.slice(2))
@@ -20,11 +21,25 @@ const {
   sendMessage
 } = getBackend(args)
 
+function appendMessage ({ memberId, event }) {
+  // Output chat msgs to terminal
+  console.log(`[${memberId}] ${event?.message}`)
+
+  // Save message to log file using the fileStore
+  if (fileStore.isEnabled()) {
+    fileStore.saveMessage(memberId, event?.message)
+  }
+}
+
+// Initialize RPC server with chat backend
+const rpcServer = new RPCServer({ sendMessage, appendMessage })
+
 Bare
   .on('suspend', () => console.log('suspended'))
   .on('resume', () => console.log('resumed'))
   .on('exit', () => {
     sendMessage('leaved')
+    rpcServer.stop()
     console.log('exited')
     swarm.destroy()
   })
@@ -50,6 +65,9 @@ swarm.on('update', () => {
 // create or join with a topic
 await joinChatRoom(args.topic || '')
 
+// Start RPC server after joining chat room
+rpcServer.start()
+
 rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
 rl.on('data', line => {
   sendMessage(line)
@@ -70,15 +88,5 @@ async function joinChatRoom (topicStr) {
     fileStore.setupLogFile(topic)
   } else {
     console.log(`[info] Joined fail`)
-  }
-}
-
-function appendMessage ({ memberId, event }) {
-  // Output chat msgs to terminal
-  console.log(`[${memberId}] ${event?.message}`)
-
-  // Save message to log file using the fileStore
-  if (fileStore.isEnabled()) {
-    fileStore.saveMessage(memberId, event?.message)
   }
 }

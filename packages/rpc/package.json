@@ -1,6 +1,6 @@
 {
   "name": "barechat-rpc",
-  "version": "0.0.1",
+  "version": "2.1.0",
   "description": "Terminal-to-terminal communication using bare-rpc",
   "main": "lib/rpc.js",
   "type": "module",

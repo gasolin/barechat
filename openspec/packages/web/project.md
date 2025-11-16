@@ -30,8 +30,11 @@ BareChat Web is the browser-based interface for the BareChat P2P chat applicatio
 
 ### Integration with CLI Package
 - Depends on `barechat` CLI package for P2P networking capabilities
-- Uses WebSocket bridge to connect browser clients to Hyperswarm network
+- Uses WebSocket bridge to connect browser clients to Hyperswarm
 - Shared message protocol and room identification with CLI version
+- Imports RPC server from CLI package via `barechat/lib/exports` module
+- Supports bidirectional messaging between terminal RPC clients and web interface
+- Eliminates code duplication by sharing RPC server implementation
 
 ## Domain Context
 
@@ -69,7 +72,7 @@ BareChat Web is the browser-based interface for the BareChat P2P chat applicatio
 ## External Dependencies
 
 ### Core Dependencies
-- **barechat**: CLI package for P2P networking functionality
+- **barechat**: CLI package for P2P networking functionality and RPC server
 - **hyperswarm**: P2P networking (via CLI package)
 - **ws**: WebSocket implementation for server-client communication
 

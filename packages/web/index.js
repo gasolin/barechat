@@ -1,7 +1,6 @@
 import process from 'bare-process'
 
-import { getBackend } from 'barechat/lib/chat-core'
-import { parseArgs } from 'barechat/lib/helper'
+import { getBackend, parseArgs, RPCServer } from 'barechat/lib/exports'
 
 import { createChatServer } from './lib/server'
 import { createWebSocketServer, broadcastMessage } from './lib/ws'
@@ -27,6 +26,22 @@ const activeConnections = new Set()
 let currentRoomTopic = null
 // wsServer will be init after command processed
 let wsServer = null
+
+// Message handling function for RPC integration
+function appendMessage ({ memberId, event }) {
+  // Broadcast to WebSocket clients
+  broadcastMessage(activeConnections, { 
+    type: 'message', 
+    sender: memberId, 
+    text: event?.message 
+  })
+}
+
+// Initialize RPC server with chat backend (optional)
+let rpcServer = null
+if (!args.noRpc) {
+  rpcServer = new RPCServer({ sendMessage, appendMessage })
+}
 
 // When there's a new peer connection in the swarm, listen for new messages
 swarm.on('connection', peer => {
@@ -118,7 +133,7 @@ webServer.listen(0, () => {
     }).catch(error => {
       console.error('[error] Error joining room:', error)
       broadcastMessage(activeConnections, { type: 'system', text: `Error joining room: ${error.message}` })
-    }).finally(()=> {
+      }).finally(()=> {
       // Create WebSocket server
       wsServer = createWebSocketServer({
         webServer,
@@ -127,6 +142,12 @@ webServer.listen(0, () => {
         handleCommand,
         sendMessage
       })
+      
+      // Start RPC server after joining chat room (if enabled)
+      if (rpcServer) {
+        rpcServer.start()
+        console.log('[info] RPC server started')
+      }
     })
   } else {
     console.log('[info] No hashcode provided, waiting for manual room creation or joining.')
@@ -138,6 +159,14 @@ webServer.listen(0, () => {
         handleCommand,
         sendMessage
       })
+    
+    // Start RPC server (if enabled)
+    if (rpcServer) {
+      rpcServer.start()
+      console.log('[info] RPC server started')
+    } else {
+      console.log('[info] RPC server disabled')
+    }
   }
 })
 
@@ -145,6 +174,9 @@ webServer.listen(0, () => {
 process.on('SIGINT', () => {
   console.log('\nShutting down BareChat Web...')
   broadcastMessage(activeConnections, { type: 'system', text: 'Server shutting down' })
+  if (rpcServer) {
+    rpcServer.stop()
+  }
   swarm.destroy()
   wsServer?.close()
   webServer.close()

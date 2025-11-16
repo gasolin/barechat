@@ -131,6 +131,27 @@ The system SHALL seamlessly integrate with the CLI package for P2P networking.
 - **AND** timestamps and metadata are preserved
 - **AND** encryption and anonymity are maintained
 
+### Requirement: RPC Server Integration
+The system SHALL provide RPC server functionality for terminal-to-web communication.
+
+#### Scenario: RPC server startup
+- **WHEN** the web server starts (unless disabled with --noRpc)
+- **THEN** the RPC server starts automatically
+- **AND** creates a Unix domain socket at the temporary directory
+- **AND** listens for RPC client connections
+
+#### Scenario: RPC message handling
+- **WHEN** an RPC client sends a message
+- **THEN** the web server receives the message through RPC
+- **AND** broadcasts the message to the P2P chat room
+- **AND** displays the message in all connected web clients
+
+#### Scenario: RPC client integration
+- **WHEN** terminal clients connect via RPC
+- **THEN** messages appear in web interface with 'rpc-client' identifier
+- **AND** bidirectional communication works between terminal and web
+- **AND** all chat participants see messages from both interfaces
+
 ### Requirement: Development and Deployment
 The system SHALL support development workflows and deployment scenarios.
 

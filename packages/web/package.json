@@ -1,6 +1,6 @@
 {
   "name": "barechat-web",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Anonymous chat anywhere with localhost web interface - Web Package",
   "main": "index.js",
   "type": "module",
@@ -9,7 +9,7 @@
     "dev": "bare index.js",
     "clean": "rm -rf node_modules dist",
     "build": "echo 'No build step required for JavaScript'",
-    "test": "echo 'No tests specified yet'"
+    "test": "bash test/test-rpc-integration.sh"
   },
   "files": [
     "lib/",

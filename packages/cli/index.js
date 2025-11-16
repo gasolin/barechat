@@ -31,15 +31,20 @@ function appendMessage ({ memberId, event }) {
   }
 }
 
-// Initialize RPC server with chat backend
-const rpcServer = new RPCServer({ sendMessage, appendMessage })
+// Initialize RPC server with chat backend (optional)
+let rpcServer = null
+if (!args.noRpc) {
+  rpcServer = new RPCServer({ sendMessage, appendMessage })
+}
 
 Bare
   .on('suspend', () => console.log('suspended'))
   .on('resume', () => console.log('resumed'))
   .on('exit', () => {
     sendMessage('leaved')
-    rpcServer.stop()
+    if (rpcServer) {
+      rpcServer.stop()
+    }
     console.log('exited')
     swarm.destroy()
   })
@@ -65,8 +70,13 @@ swarm.on('update', () => {
 // create or join with a topic
 await joinChatRoom(args.topic || '')
 
-// Start RPC server after joining chat room
-rpcServer.start()
+// Start RPC server after joining chat room (if enabled)
+if (rpcServer) {
+  rpcServer.start()
+  console.log('[info] RPC server started')
+} else {
+  console.log('[info] RPC server disabled')
+}
 
 rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
 rl.on('data', line => {

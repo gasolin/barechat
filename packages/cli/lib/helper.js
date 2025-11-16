@@ -5,7 +5,7 @@ const defaultStorePath = './barechat.txt'
 
 // A simple command-line argument parser
 export function parseArgs(argv) {
-  const result = { topic: '', store: null, bootstrap: null }
+  const result = { topic: '', store: null, bootstrap: null, noRpc: false }
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
@@ -47,6 +47,9 @@ export function parseArgs(argv) {
         }
         result.bootstrap.push(...value.split(','))
       }
+    } else if (arg === '--no-rpc') {
+      // Handle --no-rpc flag
+      result.noRpc = true
     } else if (!arg.startsWith('--') && !result.topic) {
       // First non-option argument is treated as the topic
       result.topic = arg

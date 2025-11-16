@@ -61,6 +61,16 @@ npx barechat --store
 npx barechat --store /tmp/chatlog.txt
 ```
 
+If you want to disable the RPC server, can add `--no-rpc` argument:
+
+```sh
+# Start chat without RPC server
+npx barechat --no-rpc soccer
+
+# Combine with store option
+npx barechat --no-rpc --store chatlog.txt
+```
+
 ## Development
 
 This package is part of the BareChat monorepo. See the [root README](../../README.md) for development setup instructions.

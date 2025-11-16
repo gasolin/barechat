@@ -5,7 +5,7 @@ import path from 'bare-path'
 import os from 'bare-os'
 import process from 'bare-process'
 
-const SOCKET_PATH = path.join(os.tmpdir(), 'bare-rpc.sock')
+const SOCKET_PATH = path.join(os.tmpdir(), 'barechat-rpc.sock')
 
 // Define RPC interface
 const schema = {

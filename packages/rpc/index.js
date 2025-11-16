@@ -21,13 +21,9 @@ async function startClient(message) {
   try {
     await client.connect()
     
-    // Send message
+    // Send message (this also broadcasts to the chat room)
     const result = await client.sendMessage(message)
     console.log(`Response:`, result)
-
-    // Broadcast
-    const broadcastResult = await client.broadcast(message)
-    console.log(`Broadcast result:`, broadcastResult)
 
   } catch (err) {
     console.error('RPC Error:', err.message)

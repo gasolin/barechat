@@ -1,9 +1,12 @@
 {
   "name": "barechat-web",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Anonymous chat anywhere with localhost web interface - Web Package",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "barechat-web": "bin/main.js"
+  },
   "scripts": {
     "start": "bare index.js",
     "dev": "bare index.js",

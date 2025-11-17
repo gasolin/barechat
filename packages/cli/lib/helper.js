@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'bare-fs'
+import path from 'bare-path'
 
 const defaultStorePath = './barechat.txt'
 

@@ -1,6 +1,6 @@
 import Hyperswarm from 'hyperswarm'   // Module for P2P networking and connecting peers
 import b4a from 'b4a'                 // Module for buffer-to-string and vice-versa conversions
-import { createHash } from 'crypto'
+import { createHash } from 'bare-crypto'
 import { randomBytes } from 'hypercore-crypto' // Cryptographic functions for generating the key in app
 import { version } from '../package.json'
 

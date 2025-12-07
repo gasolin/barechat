@@ -1,7 +1,7 @@
 /* global Bare */
-import readline from 'readline'  // Module for reading user input in terminal
-import tty from 'tty'            // Module to control terminal behavior
-import process from 'process'    // Process control for Bare
+import readline from 'bare-readline'  // Module for reading user input in terminal
+import tty from 'bare-tty'            // Module to control terminal behavior
+import process from 'bare-process'    // Process control for Bare
 
 import { getBackend } from './lib/chat-core'
 import { createFileStore, parseArgs } from './lib/helper'

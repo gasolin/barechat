@@ -91,22 +91,6 @@ bun run cli:start
 npm run doc
 ```
 
-## Using BareChat as a Package
-
-To make variant chat experience, you can also import `barechat/lib/chat-core` in your project.
-
-```js
-import { getBackend } from 'barechat/lib/chat-core'
-const {
-  swarm,
-  getMemberId,
-  createRoom,
-  joinRoom,
-  sendMessage
-} = getBackend()
-```
-
-Read chat-core API in [API](../../doc/api.md) doc
 
 ## Reference
 

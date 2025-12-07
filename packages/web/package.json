@@ -39,7 +39,8 @@
     "bare-http1": "^4.1.0",
     "bare-process": "^4.2.1",
     "bare-ws": "^2.0.3",
-    "barechat": "^2.0.3"
+    "barechat": "^2.0.3",
+    "barechat-core": "^2.1.2"
   },
   "imports": {
     "http": {

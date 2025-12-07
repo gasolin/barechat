@@ -4,7 +4,7 @@ import { createHash } from 'bare-crypto'
 import { randomBytes } from 'hypercore-crypto' // Cryptographic functions for generating the key in app
 import { version } from '../package.json'
 
-console.log(`BareChat v${version}`)
+console.log(`BareChat Core v${version}`)
 
 /**
  * Creates a Hyperswarm instance with optional bootstrap configuration
@@ -111,7 +111,7 @@ const joinRoom = swarm =>
       console.warn(`join error: ${error}`)
       return { done: false, topic: `err` }
     }
-}
+  }
 
 /**
  * Creates a message object.

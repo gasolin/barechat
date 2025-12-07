@@ -5,10 +5,10 @@ BareChat is an anonymous, peer-to-peer chat application that enables users to cr
 
 ## Monorepo Structure
 This is a Bun-based monorepo containing:
-- **packages/cli**: Terminal-based BareChat application (original implementation)
+- **packages/cli**: Terminal-based BareChat application
 - **packages/web**: Web-based interface with WebSocket bridge
+- **packages/core**: Shared P2P networking logic and core chat functionality
 - **packages/rpc**: Terminal-to-terminal communication using bare-rpc
-- **packages/core**: (Future) Shared P2P networking logic
 - **packages/ui**: (Future) Shared UI components
 
 ## Tech Stack
@@ -24,6 +24,7 @@ This is a Bun-based monorepo containing:
 - **Cryptography**: Hypercore-crypto, Bare-crypto (key generation and hashing)
 - **Real-time**: WebSocket (web-to-P2P bridge)
 - **Buffer Operations**: b4a (buffer-to-string conversions)
+- **Core Package**: barechat-core (shared P2P networking functionality)
 
 ### CLI Package
 - **Terminal Interface**: Bare-readline, Bare-tty
@@ -116,14 +117,15 @@ This is a Bun-based monorepo containing:
 
 ## External Dependencies
 
-### Core P2P Dependencies
-- **hyperswarm**: P2P networking and peer discovery
-- **hypercore-crypto**: Cryptographic primitives for key generation
-- **b4a**: Buffer utilities for data conversion
+### Core Package Dependencies
+- **barechat-core**: Shared P2P networking and chat functionality
+- **hyperswarm**: P2P networking and peer discovery (via core package)
+- **hypercore-crypto**: Cryptographic primitives for key generation (via core package)
+- **b4a**: Buffer utilities for data conversion (via core package)
 
 ### CLI Package Dependencies
+- **barechat-core**: Core P2P networking functionality
 - **shelljs**: Cross-platform shell command execution
-- **bare-crypto**: Cryptographic functions
 - **bare-fs**: File system operations
 - **bare-path**: Path manipulation
 - **bare-process**: Process control
@@ -140,7 +142,8 @@ This is a Bun-based monorepo containing:
 
 ### Web Package Dependencies
 - **ws**: WebSocket implementation for server-client communication
-- **barechat**: CLI package for P2P networking functionality
+- **barechat**: CLI package for RPC and helper functionality
+- **barechat-core**: Core P2P networking functionality
 
 ### Development Tools
 - **bun**: Package manager, bundler, and development server
@@ -152,6 +155,7 @@ This is a Bun-based monorepo containing:
 - **NPM Registry**: For package distribution and updates
 
 ## Package-Specific Documentation
-- **CLI Package**: See `openspec/packages/cli/project.md` for CLI-specific details
-- **Web Package**: See `openspec/packages/web/project.md` for web-specific details
+- **Core Package**: See `openspec/specs/core/spec.md` for core P2P functionality
+- **CLI Package**: See `openspec/specs/cli/spec.md` for CLI-specific details
+- **Web Package**: See `openspec/specs/web/spec.md` for web-specific details
 - **RPC Package**: See `openspec/specs/rpc/spec.md` and `openspec/specs/rpc/design.md` for RPC-specific details

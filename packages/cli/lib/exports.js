@@ -1,5 +1,5 @@
 // Export core chat functionality
-export { getBackend } from './chat-core.js'
+export { getBackend, createMessage } from 'barechat-core'
 
 // Export helper utilities
 export { createFileStore, parseArgs } from './helper.js'

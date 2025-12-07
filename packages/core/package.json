@@ -1,0 +1,53 @@
+{
+  "name": "barechat-core",
+  "version": "2.1.2",
+  "description": "Core chat functionality for BareChat - reusable P2P networking components",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf node_modules dist",
+    "build": "echo 'No build step required for JavaScript'",
+    "test": "echo 'No tests specified yet'"
+  },
+  "files": [
+    "lib/",
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "b4a": "^1.7.2",
+    "bare-crypto": "^1.11.2",
+    "hypercore-crypto": "^3.6.1",
+    "hyperswarm": "^4.14.0"
+  },
+  "imports": {
+    "crypto": {
+      "bare": "bare-crypto",
+      "default": "crypto"
+    }
+  },
+  "author": "Fred Lin <gasolin+barechat@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gasolin/barechat/issues"
+  },
+  "homepage": "https://github.com/gasolin/barechat",
+  "keywords": [
+    "bare",
+    "chat",
+    "p2p",
+    "holepunch",
+    "hyperswarm",
+    "core",
+    "networking"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gasolin/barechat.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

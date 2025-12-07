@@ -1,6 +1,7 @@
 import process from 'bare-process'
 
-import { getBackend, parseArgs, RPCServer } from 'barechat/lib/exports'
+import { getBackend } from 'barechat-core'
+import { parseArgs, RPCServer } from 'barechat/lib/exports'
 
 import { createChatServer } from './lib/server'
 import { createWebSocketServer, broadcastMessage } from './lib/ws'

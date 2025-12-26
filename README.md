@@ -20,6 +20,12 @@ Web interface for BareChat - provides a localhost web UI for anonymous P2P chat.
 - **Installation**: `npm i -g barechat-web` or `bun add -g barechat-web`
 - **Usage**: `barechat-web` or `barechat-web <topic-hash>`
 
+### `barechat-rpc` (packages/rpc)
+Terminal-to-terminal communication using bare-rpc.
+
+- **Features**: Fast IPC, simple api to send messages to multiple connected clients
+- **Usage**: `npx barechat-rpc client "Hello from terminal!"`
+
 ## 🚀 Quick Start
 
 ### Prerequisites

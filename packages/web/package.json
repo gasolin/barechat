@@ -40,7 +40,7 @@
     "bare-process": "^4.2.1",
     "bare-ws": "^2.0.3",
     "barechat": "^2.0.3",
-    "barechat-core": "^2.1.2"
+    "barechat-core": "^3.0.0"
   },
   "imports": {
     "http": {

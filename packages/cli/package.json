@@ -23,7 +23,7 @@
     "README.md"
   ],
   "dependencies": {
-    "barechat-core": "^2.1.2",
+    "barechat-core": "^3.0.0",
     "bare-fs": "^4.4.4",
     "bare-net": "^1.0.0",
     "bare-path": "^3.0.0",

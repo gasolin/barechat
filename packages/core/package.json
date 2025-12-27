@@ -1,6 +1,6 @@
 {
   "name": "barechat-core",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "Core chat functionality for BareChat - reusable P2P networking components",
   "main": "index.js",
   "type": "module",

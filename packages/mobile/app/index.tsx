@@ -11,11 +11,39 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GiftedChat, IMessage, SystemMessage, Send, InputToolbar } from "react-native-gifted-chat";
 import { Stack } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [roomId, setRoomId] = useState("");
   const [status, setStatus] = useState("Connecting WebSocket...");
+
+  const [isReady, setIsReady] = useState(false);
+  console.warn(isReady)
+  useEffect(() => {
+    async function doAsyncStuff() {
+      try {
+        // do something async here
+        // import { initBareKit } from '../core'
+        // initBareKit()
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+
+    doAsyncStuff();
+  }, []);
+
+  useEffect(() => {
+    if (isReady) {
+      SplashScreen.hide();
+    }
+  }, [isReady]);
 
   useEffect(() => {
     // Mock initial system messages from screenshot
@@ -50,7 +78,6 @@ export default function Index() {
       },
     ]);
   }, []);
-
 
   const onSend = useCallback((newMessages: IMessage[] = []) => {
     setMessages((previousMessages) =>
@@ -87,6 +114,10 @@ export default function Index() {
       />
     );
   };
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.container}>

@@ -27,7 +27,7 @@ export default function Index() {
     async function doAsyncStuff() {
       try {
         // do something async here
-        const { initBareKit } = require('../core')
+        const { initBareKit } = require('../packages/core')
         // import { initBareKit } from '../core'
         initBareKit(setRoomId)
       } catch (e) {

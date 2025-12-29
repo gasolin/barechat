@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Barechat",
-    "slug": "barechat-mobile",
-    "version": "1.0.0",
+    "name": "barechat-mobile",
+    "slug": "Barechat",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "barechatmobile",

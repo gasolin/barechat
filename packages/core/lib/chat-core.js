@@ -1,10 +1,10 @@
-import Hyperswarm from 'hyperswarm'   // Module for P2P networking and connecting peers
-import b4a from 'b4a'                 // Module for buffer-to-string and vice-versa conversions
-import { createHash } from 'bare-crypto'
-import { randomBytes } from 'hypercore-crypto' // Cryptographic functions for generating the key in app
-import { version } from '../package.json'
+import Hyperswarm from 'hyperswarm'
+import b4a from 'b4a'
+import { randomBytes, hash } from 'hypercore-crypto'
 
-console.log(`BareChat Core v${version}`)
+const version = '3.0.0'
+
+console.log(`[core] Loading BareChat Core v${version}...`)
 
 /**
  * Creates a Hyperswarm instance with optional bootstrap configuration
@@ -12,7 +12,7 @@ console.log(`BareChat Core v${version}`)
  * @param {string[]} [opts.bootstrap] - Array of bootstrap servers for peer discovery
  * @returns {Hyperswarm} Configured Hyperswarm instance
  */
-const getSwarm = (opts) => opts?.bootstrap ? new Hyperswarm({ bootstrap: opts.bootstrap }) : new Hyperswarm()
+export const getSwarm = (opts) => opts?.bootstrap ? new Hyperswarm({ bootstrap: opts.bootstrap }) : new Hyperswarm()
 
 /**
  * Checks if a string is a valid 64-character hexadecimal hash (32 bytes)
@@ -23,7 +23,7 @@ const getSwarm = (opts) => opts?.bootstrap ? new Hyperswarm({ bootstrap: opts.bo
  * isHashcode('hello world') // false
  * isHashcode('abc123') // false (too short)
  */
-const isHashcode = (str) => {
+export const isHashcode = (str) => {
   if (typeof str !== 'string') return false
   if (str.length !== 64) return false
   return /^[0-9a-fA-F]{64}$/.test(str)
@@ -34,16 +34,10 @@ const isHashcode = (str) => {
  * returns it as-is. Otherwise, creates a SHA256 hash of the string.
  * @param {string} topicStr - The topic string to convert
  * @returns {string} A 64-character hex string representing the topic
- * @example
- * // Using an existing hash
- * strToTopic('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089')
- * // Returns: 'eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089'
- *
- * // Converting a readable string
- * strToTopic('my-chat-room')
- * // Returns: SHA256 hash of 'my-chat-room' as hex string
  */
-const strToTopic = (topicStr) => isHashcode(topicStr) ? topicStr : createHash('sha256').update(topicStr).digest('hex')
+export const strToTopic = (topicStr) => isHashcode(topicStr) ? topicStr : b4a.toString(hash(b4a.from(topicStr)), 'hex')
+
+
 
 /**
  * Generates a short, human-readable identifier for a peer based on their remote public key
@@ -172,15 +166,29 @@ const sendMessage = swarm =>
  * backend.sendMessage("Hello world!");
  */
 export const getBackend = (opts) => {
-  const swarm = getSwarm(opts)
-  return {
-    createRoom: joinRoom(swarm),
-    getMemberId,
-    joinRoom: joinRoom(swarm),
-    sendMessage: sendMessage(swarm),
-    strToTopic,
-    isHashcode,
-    swarm,
-    version,
+  console.log('[core] getBackend called with opts:', opts)
+  try {
+    console.log('[core] Initializing Hyperswarm...')
+    const swarm = getSwarm(opts)
+    console.log('[core] Hyperswarm initialized successfully')
+
+    swarm.on('error', (err) => {
+      console.error('[core] Swarm error:', err)
+    })
+
+    return {
+      createRoom: joinRoom(swarm),
+      getMemberId,
+      joinRoom: joinRoom(swarm),
+      sendMessage: sendMessage(swarm),
+      strToTopic,
+      isHashcode,
+      swarm,
+      version,
+    }
+  } catch (err) {
+    console.error('[core] Failed to initialize swarm:', err)
+    throw err
   }
 }
+

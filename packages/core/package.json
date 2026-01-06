@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rm -rf node_modules dist",
     "build": "echo 'No build step required for JavaScript'",
-    "test": "echo 'No tests specified yet'"
+    "test": "brittle test/*.test.js"
   },
   "files": [
     "lib/",
@@ -17,15 +17,8 @@
   ],
   "dependencies": {
     "b4a": "^1.7.2",
-    "bare-crypto": "^1.11.2",
     "hypercore-crypto": "^3.6.1",
     "hyperswarm": "^4.14.0"
-  },
-  "imports": {
-    "crypto": {
-      "bare": "bare-crypto",
-      "default": "crypto"
-    }
   },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",
@@ -49,5 +42,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "brittle": "^3.19.1"
   }
 }

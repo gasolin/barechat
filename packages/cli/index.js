@@ -3,7 +3,7 @@ import readline from 'bare-readline'  // Module for reading user input in termin
 import tty from 'bare-tty'            // Module to control terminal behavior
 import process from 'bare-process'    // Process control for Bare
 
-import { getBackend } from './lib/chat-core'
+import { getBackend } from 'barechat-core'
 import { createFileStore, parseArgs } from './lib/helper'
 import { RPCServer } from './lib/rpc-server'
 
@@ -21,7 +21,7 @@ const {
   sendMessage
 } = getBackend(args)
 
-function appendMessage ({ memberId, event }) {
+function appendMessage({ memberId, event }) {
   // Output chat msgs to terminal
   console.log(`[${memberId}] ${event?.message}`)
 
@@ -91,7 +91,7 @@ rl.on('close', () => {
   process.kill(process.pid, 'SIGINT')
 })
 
-async function joinChatRoom (topicStr) {
+async function joinChatRoom(topicStr) {
   const { done, topic } = await joinRoom(topicStr)
   if (done) {
     console.log(`[info] Joined chat room ${topic}`)

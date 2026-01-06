@@ -1,0 +1,20 @@
+{
+    "name": "barechat-desktop",
+    "version": "3.0.0",
+    "description": "BareChat for Pear Desktop",
+    "main": "index.html",
+    "type": "module",
+    "devDependencies": {
+        "pear-interface": "^1.0.0"
+    },
+    "dependencies": {
+        "b4a": "^1.7.3",
+        "barechat-core": "^3.0.0",
+        "hypercore-crypto": "^3.6.1",
+        "hyperswarm": "^4.14.0"
+    },
+    "pear": {
+        "name": "barechat-desktop",
+        "type": "desktop"
+    }
+}

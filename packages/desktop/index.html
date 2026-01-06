@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BareChat Desktop</title>
+    <style>
+        :root {
+            --notion-bg: #f7f7f7;
+            --notion-text: #37352f;
+            --notion-border: rgba(55, 53, 47, 0.16);
+            --notion-input-bg: white;
+            --notion-button-bg: #37352f;
+            --notion-button-text: white;
+            --notion-hover-bg: rgba(55, 53, 47, 0.08);
+            --notion-active-bg: rgba(55, 53, 47, 0.16);
+            --notion-message-bg-other: white;
+            --notion-message-bg-me: #e0f2f7;
+            --notion-message-bg-system: #f0f0f0;
+            --notion-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+            --notion-radius: 3px;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--notion-bg);
+            color: var(--notion-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Pear Draggable Region */
+        #header-region {
+            -webkit-app-region: drag;
+            height: 40px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        #pear-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--notion-input-bg);
+            border: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .app-header {
+            padding: 20px 20px 10px 20px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            border-bottom: 1px solid var(--notion-border);
+            flex-shrink: 0;
+            margin-top: 20px;
+        }
+
+        .status-bar {
+            padding: 12px 20px;
+            text-align: center;
+            background-color: var(--notion-message-bg-system);
+            border-bottom: 1px solid var(--notion-border);
+            font-size: 0.9em;
+            color: var(--notion-text);
+            flex-shrink: 0;
+        }
+
+        .chat-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-controls-container {
+            display: flex;
+            padding: 12px 20px;
+            border-top: 1px solid var(--notion-border);
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .chat-input,
+        .room-input {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--notion-border);
+            border-radius: var(--notion-radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            color: var(--notion-text);
+            background-color: var(--notion-input-bg);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chat-input:focus,
+        .room-input:focus {
+            border-color: #37352f;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: var(--notion-button-bg);
+            color: var(--notion-button-text);
+            border: none;
+            border-radius: var(--notion-radius);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: rgba(55, 53, 47, 0.8);
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            max-width: calc(100% - 20px);
+        }
+
+        .message-content {
+            padding: 10px 15px;
+            border-radius: var(--notion-radius);
+            word-wrap: break-word;
+            flex-grow: 1;
+            box-shadow: rgba(15, 15, 15, 0.02) 0px 1px 1px;
+            line-height: 1.5;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .message-content:hover {
+            background-color: var(--notion-hover-bg) !important;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+
+        .avatar {
+            font-size: 1.1em;
+            line-height: 1;
+        }
+
+        .message-time {
+            font-size: 0.75em;
+            color: rgba(55, 53, 47, 0.6);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .message.other {
+            align-self: flex-start;
+        }
+
+        .message.other .message-content {
+            background-color: var(--notion-message-bg-other);
+            border: 1px solid var(--notion-border);
+            color: var(--notion-text);
+        }
+
+        .message.me {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.me .message-content {
+            background-color: var(--notion-message-bg-me);
+            border: 1px solid rgba(179, 230, 243, 0.8);
+            color: var(--notion-text);
+        }
+
+        .message.me .message-sender {
+            justify-content: flex-end;
+        }
+
+        .message.system {
+            align-self: center;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .message.system .message-content {
+            background-color: var(--notion-message-bg-system);
+            color: rgba(55, 53, 47, 0.7);
+            font-size: 0.8em;
+            padding: 8px 12px;
+            border: 1px solid rgba(55, 53, 47, 0.08);
+        }
+
+        .message.system .message-sender,
+        .message.system .message-time {
+            display: none;
+        }
+
+        #copy-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--notion-button-bg);
+            color: var(--notion-button-text);
+            padding: 10px 20px;
+            border-radius: var(--notion-radius);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            font-size: 0.9em;
+            box-shadow: var(--notion-shadow);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-region"></div>
+    <div id="pear-controls">
+        <pear-ctrl></pear-ctrl>
+    </div>
+    <div class="chat-container">
+        <div class="app-header">
+            BareChat Desktop
+        </div>
+
+        <div class="chat-controls-container">
+            <input type="text" class="room-input" id="room-input" placeholder="Enter room ID to join...">
+            <button class="button" id="join-button">Join</button>
+            <button class="button" id="info-button">Info</button>
+        </div>
+
+        <div class="status-bar" id="status-bar">
+            Discovering Peers...
+        </div>
+
+        <div class="chat-content" id="chat-content">
+            <div class="message system">
+                <div class="message-content">
+                    <div>Welcome to BareChat Desktop! Create a new room or join an existing one.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-controls-container">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Type your message...">
+            <button class="button" id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+</body>
+
+</html>

@@ -198,7 +198,15 @@ joinButton.addEventListener('click', () => {
     const roomId = roomInput.value.trim();
     handleJoin(roomId);
     roomInput.value = '';
+    updateJoinButtonState();
 });
+
+const updateJoinButtonState = () => {
+    joinButton.disabled = !roomInput.value.trim();
+};
+
+roomInput.addEventListener('input', updateJoinButtonState);
+updateJoinButtonState();
 
 infoButton.addEventListener('click', () => {
     addMessageToChat({

@@ -134,8 +134,14 @@
             transition: background-color 0.2s ease, opacity 0.2s ease;
         }
 
-        .button:hover {
-            background-color: rgba(55, 53, 47, 0.8);
+        .button:active {
+            background-color: rgba(55, 53, 47, 1);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
         .message {
@@ -257,7 +263,7 @@
 
         <div class="chat-controls-container">
             <input type="text" class="room-input" id="room-input" placeholder="Enter room ID to join...">
-            <button class="button" id="join-button">Join</button>
+            <button class="button" id="join-button" disabled>Join</button>
             <button class="button" id="info-button">Info</button>
         </div>
 

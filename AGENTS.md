@@ -1,6 +1,8 @@
 <!-- OPENSPEC:START -->
 # OpenSpec Instructions
 
+用中文溝通，用英文寫 code
+
 These instructions are for AI assistants working in this project.
 
 Always open `@/openspec/AGENTS.md` when the request:

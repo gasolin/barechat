@@ -303,6 +303,7 @@ window.onload = function() {
         if (roomId) {
             sendCommand('join ' + roomId);
             roomInput.value = '';
+            updateJoinButtonState();
         } else {
             addMessageToChat({
                 type: 'system',
@@ -310,6 +311,13 @@ window.onload = function() {
             });
         }
     });
+
+    const updateJoinButtonState = () => {
+        joinButton.disabled = !roomInput.value.trim();
+    };
+
+    roomInput.addEventListener('input', updateJoinButtonState);
+    updateJoinButtonState();
 
     infoButton.addEventListener('click', function() {
         sendCommand('info');
@@ -439,6 +447,11 @@ export const HTML = `
         .button:active {
             background-color: rgba(55, 53, 47, 1);
         }
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
         .message {
             display: flex;
@@ -552,7 +565,7 @@ export const HTML = `
 
         <div class="chat-controls-container">
             <input type="text" class="room-input" id="room-input" placeholder="Enter room ID to join...">
-            <button class="button" id="join-button">Join</button>
+            <button class="button" id="join-button" disabled>Join</button>
             <button class="button" id="info-button">Info</button>
         </div>
 

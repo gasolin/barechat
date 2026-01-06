@@ -16,6 +16,7 @@
     "@react-navigation/native": "^7.1.8",
     "b4a": "^1.7.3",
     "bare-events": "^2.8.2",
+    "bare-rpc": "^1.1.0",
     "barechat-core": "^3.0.0",
     "compact-encoding": "^2.18.0",
     "expo": "~54.0.27",

@@ -22,16 +22,28 @@ export default function Index() {
   const [status, setStatus] = useState("Connecting WebSocket...");
 
   const [isReady, setIsReady] = useState(false);
-  console.warn(isReady)
+  const [backend, setBackend] = useState<any>(null);
+
   useEffect(() => {
     async function doAsyncStuff() {
       try {
-        // do something async here
         const { initBareKit } = require('../packages/core')
-        // import { initBareKit } from '../core'
-        initBareKit(setRoomId)
+        const b = await initBareKit(
+          (topic: string) => setRoomId(topic),
+          (msg: any) => {
+            setMessages((previousMessages) =>
+              GiftedChat.append(previousMessages, [{
+                _id: Math.random().toString(),
+                text: msg.message,
+                createdAt: new Date(msg.timestamp),
+                user: { _id: 2, name: 'Peer' },
+              }])
+            );
+          }
+        )
+        setBackend(b)
       } catch (e) {
-        console.warn(e);
+        console.warn('Init error:', e);
       } finally {
         setIsReady(true);
       }
@@ -81,10 +93,23 @@ export default function Index() {
   }, []);
 
   const onSend = useCallback((newMessages: IMessage[] = []) => {
+    if (backend && newMessages.length > 0) {
+      backend.sendMessage(newMessages[0].text)
+    }
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, newMessages)
     );
-  }, []);
+  }, [backend]);
+
+  const handleJoin = async () => {
+    if (backend) {
+      try {
+        await backend.joinRoom(roomId)
+      } catch (e) {
+        console.error('Join error:', e)
+      }
+    }
+  };
 
   const renderSystemMessage = (props: any) => {
     return (
@@ -141,7 +166,7 @@ export default function Index() {
           value={roomId}
           onChangeText={setRoomId}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleJoin}>
           <Text style={styles.buttonText}>Join</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

@@ -166,3 +166,4 @@ This is a Bun-based monorepo containing:
 - **CLI Package**: See `openspec/specs/cli/spec.md` for CLI-specific details
 - **Web Package**: See `openspec/specs/web/spec.md` for web-specific details
 - **RPC Package**: See `openspec/specs/rpc/spec.md` and `openspec/specs/rpc/design.md` for RPC-specific details
+- **Deployment Guide**: See `openspec/deploy.md` for instructions on publishing packages to NPM

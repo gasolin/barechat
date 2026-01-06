@@ -1,6 +1,6 @@
 {
   "name": "barechat",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "Anonymous chat anywhere with commandline - CLI Package",
   "main": "index.js",
   "type": "module",

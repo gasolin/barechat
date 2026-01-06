@@ -8,6 +8,7 @@ This is a Bun-based monorepo containing:
 - **packages/cli**: Terminal-based BareChat application
 - **packages/web**: Web-based interface with WebSocket bridge
 - **packages/core**: Shared P2P networking logic and core chat functionality
+- **packages/desktop**: Pear-based desktop application (P2P-first)
 - **packages/rpc**: Terminal-to-terminal communication using bare-rpc
 - **packages/ui**: (Future) Shared UI components
 
@@ -16,12 +17,13 @@ This is a Bun-based monorepo containing:
 ### Runtime & Build
 - **Package Manager**: Bun (monorepo management, bundling, development)
 - **CLI Runtime**: Bare (JavaScript runtime for embedded systems)
+- **Desktop Runtime**: Pear (P2P-first runtime for desktop)
 - **Web Runtime**: Browser ES Modules
 - **Build System**: Bun workspaces and scripts
 
 ### Core Technologies
 - **Networking**: Hyperswarm (P2P network discovery and connections)
-- **Cryptography**: Hypercore-crypto, Bare-crypto (key generation and hashing)
+- **Cryptography**: Hypercore-crypto (portable cryptographic primitives)
 - **Real-time**: WebSocket (web-to-P2P bridge)
 - **Buffer Operations**: b4a (buffer-to-string conversions)
 - **Core Package**: barechat-core (shared P2P networking functionality)
@@ -139,6 +141,11 @@ This is a Bun-based monorepo containing:
 - **bare-path**: Path manipulation for socket paths
 - **bare-process**: Process control and signal handling
 - **bare-os**: OS utilities for temporary directory access
+
+### Desktop Package Dependencies
+- **barechat-core**: Core P2P networking functionality
+- **b4a**: Buffer utilities
+- **hyperswarm**: P2P networking
 
 ### Web Package Dependencies
 - **ws**: WebSocket implementation for server-client communication

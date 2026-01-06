@@ -8,6 +8,14 @@ Core chat functionality for BareChat - reusable P2P networking components.
 npm install barechat-core
 ```
 
+## Testing
+
+Run the tests using `brittle`:
+
+```bash
+npm test
+```
+
 ## Usage
 
 ```javascript
@@ -105,7 +113,7 @@ backend.swarm.on('connection', (peer) => {
 })
 ```
 
-For detailed API documentation, see the [API documentation](../../../doc/api.md).
+For detailed API documentation, see the [API documentation](../../doc/api.md).
 
 ## License
 

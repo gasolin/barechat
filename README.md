@@ -20,6 +20,12 @@ Web interface for BareChat - provides a localhost web UI for anonymous P2P chat.
 - **Installation**: `npm i -g barechat-web` or `bun add -g barechat-web`
 - **Usage**: `barechat-web` or `barechat-web <topic-hash>`
 
+### `barechat-desktop` (packages/desktop)
+Desktop application for BareChat powered by the Pear platform.
+
+- **Features**: Native desktop experience, integrated window controls, direct P2P networking
+- **Usage**: `cd packages/desktop && pear run --dev .`
+
 ### `barechat-rpc` (packages/rpc)
 Terminal-to-terminal communication using bare-rpc.
 
@@ -139,10 +145,14 @@ barechat/
 │   │   ├── openspec/        # OpenSpec specifications
 │   │   ├── index.js        # Main entry point
 │   │   └── package.json    # Package configuration
-│   └── web/                 # Web interface application
-│       ├── lib/            # Server and WebSocket logic
-│       ├── ui/             # Web UI components
-│       ├── index.js        # Main entry point
+│   ├── web/                 # Web interface application
+│   │   ├── lib/            # Server and WebSocket logic
+│   │   ├── ui/             # Web UI components
+│   │   ├── index.js        # Main entry point
+│   │   └── package.json    # Package configuration
+│   └── desktop/             # Pear Desktop application
+│       ├── index.html      # Main UI entry point
+│       ├── app.js          # Desktop application logic
 │       └── package.json    # Package configuration
 ├── doc/                    # Documentation
 │   └── api.md             # API documentation
@@ -157,7 +167,8 @@ barechat/
 - **Package Manager**: Bun (with workspace support)
 - **Language**: ES Modules JavaScript
 - **Networking**: Hyperswarm (P2P network discovery)
-- **Cryptography**: Hypercore-crypto, Bare-crypto
+- **Desktop Platform**: Pear (P2P-first desktop development platform)
+- **Cryptography**: Hypercore-crypto
 
 ## 📚 Documentation
 

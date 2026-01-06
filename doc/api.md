@@ -1,6 +1,16 @@
 ## Constants
 
 <dl>
+<dt><a href="#getSwarm">getSwarm</a> ⇒ <code>Hyperswarm</code></dt>
+<dd><p>Creates a Hyperswarm instance with optional bootstrap configuration</p>
+</dd>
+<dt><a href="#isHashcode">isHashcode</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if a string is a valid 64-character hexadecimal hash (32 bytes)</p>
+</dd>
+<dt><a href="#strToTopic">strToTopic</a> ⇒ <code>string</code></dt>
+<dd><p>Converts a string to a topic buffer. If the string is already a valid hashcode,
+returns it as-is. Otherwise, creates a SHA256 hash of the string.</p>
+</dd>
 <dt><a href="#createMessage">createMessage</a> ⇒ <code>object</code></dt>
 <dd><p>Creates a message object.</p>
 </dd>
@@ -12,16 +22,6 @@
 ## Functions
 
 <dl>
-<dt><a href="#getSwarm">getSwarm([opts])</a> ⇒ <code>Hyperswarm</code></dt>
-<dd><p>Creates a Hyperswarm instance with optional bootstrap configuration</p>
-</dd>
-<dt><a href="#isHashcode">isHashcode(str)</a> ⇒ <code>boolean</code></dt>
-<dd><p>Checks if a string is a valid 64-character hexadecimal hash (32 bytes)</p>
-</dd>
-<dt><a href="#strToTopic">strToTopic(topicStr)</a> ⇒ <code>string</code></dt>
-<dd><p>Converts a string to a topic buffer. If the string is already a valid hashcode,
-returns it as-is. Otherwise, creates a SHA256 hash of the string.</p>
-</dd>
 <dt><a href="#getMemberId">getMemberId(peer)</a> ⇒ <code>string</code></dt>
 <dd><p>Generates a short, human-readable identifier for a peer based on their remote public key</p>
 </dd>
@@ -32,6 +32,50 @@ returns it as-is. Otherwise, creates a SHA256 hash of the string.</p>
 <dd><p>Sends a message to all peers currently connected in the swarm</p>
 </dd>
 </dl>
+
+<a name="getSwarm"></a>
+
+## getSwarm ⇒ <code>Hyperswarm</code>
+Creates a Hyperswarm instance with optional bootstrap configuration
+
+**Kind**: global constant  
+**Returns**: <code>Hyperswarm</code> - Configured Hyperswarm instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [opts] | <code>Object</code> | Configuration options |
+| [opts.bootstrap] | <code>Array.&lt;string&gt;</code> | Array of bootstrap servers for peer discovery |
+
+<a name="isHashcode"></a>
+
+## isHashcode ⇒ <code>boolean</code>
+Checks if a string is a valid 64-character hexadecimal hash (32 bytes)
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - True if the string is a valid 64-character hex string  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>string</code> | The string to validate |
+
+**Example**  
+```js
+isHashcode('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089') // true
+isHashcode('hello world') // false
+isHashcode('abc123') // false (too short)
+```
+<a name="strToTopic"></a>
+
+## strToTopic ⇒ <code>string</code>
+Converts a string to a topic buffer. If the string is already a valid hashcode,
+returns it as-is. Otherwise, creates a SHA256 hash of the string.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - A 64-character hex string representing the topic  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| topicStr | <code>string</code> | The topic string to convert |
 
 <a name="createMessage"></a>
 
@@ -86,60 +130,6 @@ Initializes the networking layer and returns an object containing the core API f
 const backend = getBackend({ bootstrap: ['192.168.0.123:55688'] });
 const room = await backend.joinRoom();
 backend.sendMessage("Hello world!");
-```
-<a name="getSwarm"></a>
-
-## getSwarm([opts]) ⇒ <code>Hyperswarm</code>
-Creates a Hyperswarm instance with optional bootstrap configuration
-
-**Kind**: global function  
-**Returns**: <code>Hyperswarm</code> - Configured Hyperswarm instance  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [opts] | <code>Object</code> | Configuration options |
-| [opts.bootstrap] | <code>Array.&lt;string&gt;</code> | Array of bootstrap servers for peer discovery |
-
-<a name="isHashcode"></a>
-
-## isHashcode(str) ⇒ <code>boolean</code>
-Checks if a string is a valid 64-character hexadecimal hash (32 bytes)
-
-**Kind**: global function  
-**Returns**: <code>boolean</code> - True if the string is a valid 64-character hex string  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>string</code> | The string to validate |
-
-**Example**  
-```js
-isHashcode('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089') // true
-isHashcode('hello world') // false
-isHashcode('abc123') // false (too short)
-```
-<a name="strToTopic"></a>
-
-## strToTopic(topicStr) ⇒ <code>string</code>
-Converts a string to a topic buffer. If the string is already a valid hashcode,
-returns it as-is. Otherwise, creates a SHA256 hash of the string.
-
-**Kind**: global function  
-**Returns**: <code>string</code> - A 64-character hex string representing the topic  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| topicStr | <code>string</code> | The topic string to convert |
-
-**Example**  
-```js
-// Using an existing hash
-strToTopic('eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089')
-// Returns: 'eaabffe32a969eeae9a4588a6e088534aae8066db2c055107b9e700fd6033089'
-
-// Converting a readable string
-strToTopic('my-chat-room')
-// Returns: SHA256 hash of 'my-chat-room' as hex string
 ```
 <a name="getMemberId"></a>
 

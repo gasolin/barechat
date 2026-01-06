@@ -89,7 +89,7 @@ You can also import and use the web server functionality in your project:
 ```js
 import { createChatServer } from 'barechat-web/lib/server'
 import { createWebSocketServer } from 'barechat-web/lib/ws'
-import { getBackend } from 'barechat/lib/chat-core'
+import { getBackend } from 'barechat-core'
 
 // Create your own web chat interface
 const backend = getBackend()
@@ -102,7 +102,7 @@ const wsServer = createWebSocketServer({
 
 ## Reference
 
-- Built on top of [barechat](https://github.com/gasolin/barechat) core functionality
+- Built on [barechat-core](../core) - the reusable P2P networking logic
 - Uses [RPGUI](https://github.com/RonenNess/RPGUI#rpgui) for UI components
 - WebSocket implementation for real-time communication
 

@@ -7,6 +7,12 @@ import process from 'bare-process'
 
 const SOCKET_PATH = path.join(os.tmpdir(), 'barechat-rpc.sock')
 
+const COMMANDS = {
+  SEND_MESSAGE: 1,
+  BROADCAST: 2,
+  RECEIVE_MESSAGE: 5
+}
+
 // Define RPC interface
 const schema = {
   id: 'terminal-rpc',
@@ -29,22 +35,22 @@ export class RPCServer {
 
   start() {
     console.log('Starting RPC server...')
-    
+
     // Clean up old socket
     try {
       fs.unlinkSync(SOCKET_PATH)
-    } catch (e) {}
+    } catch (e) { }
 
     this.server = net.createServer((socket) => {
       console.log('Client connected')
 
       const rpc = new RPC(socket, (req) => {
-        if (req.command === 1) {
+        if (req.command === COMMANDS.SEND_MESSAGE) {
           // sendMessage command
           const message = req.data.toString()
           console.log(`\n📨 Received: "${message}"`)
           req.reply(JSON.stringify({ success: true, echo: message }))
-        } else if (req.command === 2) {
+        } else if (req.command === COMMANDS.BROADCAST) {
           // broadcast command
           const message = req.data.toString()
           console.log(`\n📢 Broadcast: "${message}"`)
@@ -83,6 +89,7 @@ export class RPCClient {
   constructor() {
     this.socket = null
     this.rpc = null
+    this.onmessage = null
   }
 
   async connect() {
@@ -96,7 +103,19 @@ export class RPCClient {
     })
 
     console.log('✓ Connected to server\n')
-    this.rpc = new RPC(this.socket)
+    this.rpc = new RPC(this.socket, (req) => {
+      if (req.command === COMMANDS.RECEIVE_MESSAGE) {
+        if (this.onmessage) {
+          try {
+            const data = JSON.parse(req.data.toString())
+            this.onmessage(data)
+          } catch (err) {
+            console.error('Error in onmessage handler:', err.message)
+          }
+        }
+        req.reply()
+      }
+    })
   }
 
   async sendMessage(message) {
@@ -105,7 +124,7 @@ export class RPCClient {
     }
 
     console.log(`Sending: "${message}"`)
-    const req = this.rpc.request(1)
+    const req = this.rpc.request(COMMANDS.SEND_MESSAGE)
     req.send(message)
     const result = await req.reply()
     return JSON.parse(result.toString())
@@ -117,7 +136,7 @@ export class RPCClient {
     }
 
     console.log(`Broadcasting: "${message}"`)
-    const req = this.rpc.request(2)
+    const req = this.rpc.request(COMMANDS.BROADCAST)
     req.send(message)
     const result = await req.reply()
     return JSON.parse(result.toString())
@@ -131,4 +150,4 @@ export class RPCClient {
   }
 }
 
-export { SOCKET_PATH, schema }
+export { SOCKET_PATH, schema, COMMANDS }

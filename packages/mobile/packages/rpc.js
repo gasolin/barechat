@@ -12,7 +12,8 @@ const COMMANDS = {
     JOIN_ROOM: 1,
     SEND_MESSAGE: 2,
     ON_MESSAGE: 3,
-    GET_MEMBER_ID: 4
+    GET_MEMBER_ID: 4,
+    RECEIVE_MESSAGE: 5
 }
 
 class ChatRPC {
@@ -26,7 +27,7 @@ class ChatRPC {
      * @param {any} data - Data to send (will be JSON stringified if not a string/buffer)
      * @returns {Promise<string>} Response from the other side
      */
-    request(command, data) {
+    request(command = COMMANDS.SEND_MESSAGE, data) {
         const req = this.rpc.request(command)
         if (data === undefined) data = null
         const payload = (typeof data === 'string' || data instanceof Uint8Array) ? data : JSON.stringify(data)

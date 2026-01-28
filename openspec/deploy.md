@@ -70,8 +70,8 @@ npm publish --tag beta --access public
 
 ```bash
 cd packages/desktop
-pear stage --dev # to stage changes
-pear seed # to provide the app to others
+pear stage dev # to stage changes to 'dev' channel
+pear seed dev # to seed the 'dev' channel to others
 ```
 
 ## Automation

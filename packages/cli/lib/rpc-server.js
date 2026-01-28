@@ -8,61 +8,72 @@ import process from 'bare-process'
 const SOCKET_PATH = path.join(os.tmpdir(), 'barechat-rpc.sock')
 const RPC_MEMBER_ID = 'rpc-client'
 
+const COMMANDS = {
+  SEND_MESSAGE: 1,
+  BROADCAST: 2,
+  RECEIVE_MESSAGE: 5
+}
+
 export class RPCServer {
   constructor(chatBackend) {
     this.server = null
     this.chatBackend = chatBackend
+    this.connections = new Set()
   }
 
   start() {
     console.log('[rpc] Starting RPC server for chat integration...')
-    
+
     // Clean up old socket
     try {
       fs.unlinkSync(SOCKET_PATH)
-    } catch (e) {}
+    } catch (e) { }
 
     this.server = net.createServer((socket) => {
       console.log('[rpc] Client connected')
 
-      new RPC(socket, (req) => {
-        if (req.command === 1) {
+      const rpc = new RPC(socket, (req) => {
+        if (req.command === COMMANDS.SEND_MESSAGE) {
           // sendMessage command
           const message = req.data.toString()
           console.log(`[rpc] Received message: "${message}"`)
-          
+
           // Send message to chat room
           this.chatBackend.sendMessage(message)
-          
+
           // Store the message locally
           if (this.chatBackend.appendMessage) {
             this.chatBackend.appendMessage({ memberId: RPC_MEMBER_ID, event: { message } })
           }
-          
+
           req.reply(JSON.stringify({ success: true, echo: message }))
-        } else if (req.command === 2) {
+        } else if (req.command === COMMANDS.BROADCAST) {
           // broadcast command (same as sendMessage for chat)
           const message = req.data.toString()
           console.log(`[rpc] Broadcasting message: "${message}"`)
-          
+
           // Send message to chat room
           this.chatBackend.sendMessage(message)
-          
+
           // Store the message locally
           if (this.chatBackend.appendMessage) {
             this.chatBackend.appendMessage({ memberId: RPC_MEMBER_ID, event: { message } })
           }
-          
+
           req.reply(JSON.stringify({ received: true }))
         }
       })
 
+      this.connections.add(rpc)
+
       socket.on('close', () => {
         console.log('[rpc] Client disconnected')
+        this.connections.delete(rpc)
       })
 
       socket.on('error', (err) => {
         console.error('[rpc] Socket error:', err.message)
+        this.connections.delete(rpc)
       })
     })
 
@@ -77,9 +88,24 @@ export class RPCServer {
     })
   }
 
+  notifyAll(message) {
+    for (const rpc of this.connections) {
+      try {
+        const req = rpc.request(COMMANDS.RECEIVE_MESSAGE)
+        req.send(JSON.stringify(message))
+        // We don't necessarily wait for a reply for a notification,
+        // but bare-rpc requests usually expect one or can be fire-and-forget
+        // depending on how the handler is set up.
+      } catch (err) {
+        console.error('[rpc] Failed to notify client:', err.message)
+      }
+    }
+  }
+
   stop() {
     if (this.server) {
       this.server.close()
+      this.connections.clear()
       console.log('[rpc] Server stopped')
     }
   }

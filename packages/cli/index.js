@@ -29,6 +29,11 @@ function appendMessage({ memberId, event }) {
   if (fileStore.isEnabled()) {
     fileStore.saveMessage(memberId, event?.message)
   }
+
+  // Notify RPC clients (avoid loops)
+  if (rpcServer && memberId !== 'me' && memberId !== 'rpc-client') {
+    rpcServer.notifyAll({ memberId, message: event?.message })
+  }
 }
 
 // Initialize RPC server with chat backend (optional)

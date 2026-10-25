@@ -7,7 +7,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "lint": "expo lint",
-    "bundle-core": "npx bare-pack --out packages/core/main.bundle.js packages/core/main.js --host ios-arm64 --host ios-arm64-simulator --host ios-x64-simulator --host android-arm64 --host android-x64 --linked"
+    "link:ios": "bare-link --preset ios --out ../../node_modules/react-native-bare-kit/ios/addons packages/core/main.js",
+    "link:android": "bare-link --preset android --out ../../node_modules/react-native-bare-kit/android/src/main/addons packages/core/main.js",
+    "bundle-core": "bare-pack --out packages/core/main.bundle.js packages/core/main.js --host ios-arm64 --host ios-arm64-simulator --host ios-x64-simulator --host android-arm64 --host android-x64 --linked"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -15,10 +17,10 @@
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
     "b4a": "^1.9.0",
-    "bare-events": "^2.8.2",
+    "bare-events": "^2.9.2",
     "bare-rpc": "^1.3.8",
     "barechat-core": "^3.0.1",
-    "compact-encoding": "^2.18.0",
+    "compact-encoding": "^2.19.2",
     "expo": "~58.0.19",
     "expo-constants": "~58.0.13",
     "expo-font": "~58.0.10",
@@ -34,7 +36,7 @@
     "framed-stream": "^1.0.1",
     "react": "19.3.0",
     "react-native": "0.88.0",
-    "react-native-bare-kit": "^0.11.5",
+    "react-native-bare-kit": "^0.16.0",
     "react-native-gesture-handler": "~3.3.0",
     "react-native-gifted-chat": "^3.2.2",
     "react-native-reanimated": "4.7.1",
@@ -45,6 +47,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.0",
+    "bare-link": "^4.0.1",
+    "bare-pack": "^3.0.2",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~58.0.4",
     "typescript": "~5.9.2"

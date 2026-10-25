@@ -1,6 +1,6 @@
 {
   "name": "barechat",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Anonymous chat anywhere with commandline - CLI Package",
   "main": "index.js",
   "type": "module",
@@ -23,7 +23,7 @@
     "README.md"
   ],
   "dependencies": {
-    "barechat-core": "^3.0.0",
+    "barechat-core": "^3.0.1",
     "bare-fs": "^4.8.4",
     "bare-net": "^2.3.3",
     "bare-os": "^3.9.3",

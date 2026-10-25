@@ -13,7 +13,9 @@ const COMMANDS = {
     SEND_MESSAGE: 2,
     ON_MESSAGE: 3,
     GET_MEMBER_ID: 4,
-    RECEIVE_MESSAGE: 5
+    RECEIVE_MESSAGE: 5,
+    GET_INFO: 6,
+    ON_STATUS: 7
 }
 
 class ChatRPC {
@@ -62,6 +64,11 @@ class ChatRPC {
         return JSON.parse(res)
     }
 
+    async getInfo() {
+        const res = await this.request(COMMANDS.GET_INFO, '')
+        return JSON.parse(res)
+    }
+
     // --- Convenience methods for the Server (Worklet side) ---
 
     /**
@@ -70,6 +77,15 @@ class ChatRPC {
      */
     async emitMessage(message) {
         const res = await this.request(COMMANDS.ON_MESSAGE, message)
+        return JSON.parse(res)
+    }
+
+    /**
+     * Notify the UI about connection/status updates
+     * @param {Object} status - The status object ({ peersCount, systemMessage })
+     */
+    async emitStatus(status) {
+        const res = await this.request(COMMANDS.ON_STATUS, status)
         return JSON.parse(res)
     }
 }

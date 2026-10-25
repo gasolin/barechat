@@ -19,38 +19,77 @@ SplashScreen.preventAutoHideAsync();
 export default function Index() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [roomId, setRoomId] = useState("");
-  const [status, setStatus] = useState("Connecting WebSocket...");
+  const [status, setStatus] = useState("Initializing P2P Worklet...");
 
   const [isReady, setIsReady] = useState(false);
   const [backend, setBackend] = useState<any>(null);
+
+  const appendSystemMessage = useCallback((text: string) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(
+        previousMessages,
+        [
+          {
+            _id: Math.random().toString(),
+            text,
+            createdAt: new Date(),
+            system: true,
+            user: { _id: 0 },
+          },
+        ],
+        false
+      )
+    );
+  }, []);
 
   useEffect(() => {
     async function doAsyncStuff() {
       try {
         const { initBareKit } = require('../packages/core')
         const b = await initBareKit(
-          (topic: string) => setRoomId(topic),
+          (topic: string) => {
+            setRoomId(topic);
+            setStatus(`Room: ${topic.substring(0, 12)}...`);
+            appendSystemMessage(`Joined chat room: ${topic}`);
+          },
           (msg: any) => {
+            const senderId = msg.sender || 'Peer';
             setMessages((previousMessages) =>
-              GiftedChat.append(previousMessages, [{
-                _id: Math.random().toString(),
-                text: msg.message,
-                createdAt: new Date(msg.timestamp),
-                user: { _id: 2, name: 'Peer' },
-              }])
+              GiftedChat.append(
+                previousMessages,
+                [
+                  {
+                    _id: Math.random().toString(),
+                    text: msg.message,
+                    createdAt: msg.timestamp ? new Date(msg.timestamp) : new Date(),
+                    user: { _id: senderId, name: senderId },
+                  },
+                ],
+                false
+              )
             );
+          },
+          (statusUpdate: { peersCount?: number; systemMessage?: string }) => {
+            if (typeof statusUpdate.peersCount === 'number') {
+              setStatus(`Connected peers: ${statusUpdate.peersCount}`);
+            }
+            if (statusUpdate.systemMessage) {
+              appendSystemMessage(statusUpdate.systemMessage);
+            }
           }
         )
         setBackend(b)
+        setStatus("Ready (No room joined)");
       } catch (e) {
         console.warn('Init error:', e);
+        setStatus("Worklet initialization error");
       } finally {
         setIsReady(true);
       }
     }
 
     doAsyncStuff();
-  }, []);
+  }, [appendSystemMessage]);
 
   useEffect(() => {
     if (isReady) {
@@ -59,32 +98,10 @@ export default function Index() {
   }, [isReady]);
 
   useEffect(() => {
-    // Mock initial system messages from screenshot
     setMessages([
       {
         _id: 1,
         text: "Welcome to BareChat! Create a new room or join an existing one.",
-        createdAt: new Date(),
-        system: true,
-        user: { _id: 0 },
-      },
-      {
-        _id: 2,
-        text: "WebSocket Connected",
-        createdAt: new Date(),
-        system: true,
-        user: { _id: 0 },
-      },
-      {
-        _id: 3,
-        text: "No room joined yet.",
-        createdAt: new Date(),
-        system: true,
-        user: { _id: 0 },
-      },
-      {
-        _id: 4,
-        text: "BareChat v.2.1.1 Current room: None Connected peers: 0",
         createdAt: new Date(),
         system: true,
         user: { _id: 0 },
@@ -97,16 +114,39 @@ export default function Index() {
       backend.sendMessage(newMessages[0].text)
     }
     setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
+      GiftedChat.append(previousMessages, newMessages, false)
     );
   }, [backend]);
 
   const handleJoin = async () => {
     if (backend) {
       try {
-        await backend.joinRoom(roomId)
+        setStatus("Joining room...");
+        const res = await backend.joinRoom(roomId.trim());
+        if (!res?.done) {
+          setStatus("Failed to join room");
+          appendSystemMessage("Failed to join chat room");
+        }
       } catch (e) {
         console.error('Join error:', e)
+        setStatus("Join error");
+      }
+    }
+  };
+
+  const handleInfo = async () => {
+    if (backend?.getInfo) {
+      try {
+        const info = await backend.getInfo();
+        if (info?.error) {
+          appendSystemMessage(`Error: ${info.error}`);
+          return;
+        }
+        appendSystemMessage(
+          `BareChat v.${info.version}\nCurrent room: ${info.topic || 'None'}\nConnected peers: ${info.peersCount}`
+        );
+      } catch (e) {
+        console.error('Info error:', e);
       }
     }
   };
@@ -169,7 +209,7 @@ export default function Index() {
         <TouchableOpacity style={styles.button} onPress={handleJoin}>
           <Text style={styles.buttonText}>Join</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleInfo}>
           <Text style={styles.buttonText}>Info</Text>
         </TouchableOpacity>
       </View>

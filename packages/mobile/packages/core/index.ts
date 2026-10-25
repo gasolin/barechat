@@ -11,7 +11,11 @@ import b4a from 'b4a'
  * @param onMessage Callback when a message is received from the P2P network
  * @returns Interface to interact with the core backend
  */
-export const initBareKit = async (onRoomJoined: (topic: string) => void, onMessage: (msg: any) => void) => {
+export const initBareKit = async (
+  onRoomJoined: (topic: string) => void,
+  onMessage: (msg: any) => void,
+  onStatus?: (status: { peersCount?: number; systemMessage?: string }) => void
+) => {
   const source = require('./main.bundle')
   const worklet = new Worklet()
 
@@ -27,16 +31,27 @@ export const initBareKit = async (onRoomJoined: (topic: string) => void, onMessa
       } catch (e) {
         console.error('Error parsing message from worklet:', e)
       }
+    } else if (req.command === COMMANDS.ON_STATUS) {
+      try {
+        const status = JSON.parse(b4a.toString(req.data, 'utf8'))
+        onStatus?.(status)
+        ChatRPC.reply(req, { received: true })
+      } catch (e) {
+        console.error('Error parsing status from worklet:', e)
+      }
     }
   })
 
   return {
     joinRoom: async (topic: string) => {
       const res = await rpc.joinRoom(topic)
-      onRoomJoined(res.topic)
+      if (res.done && res.topic) {
+        onRoomJoined(res.topic)
+      }
       return res
     },
     sendMessage: (msg: string) => rpc.sendMessage(msg),
+    getInfo: () => rpc.getInfo(),
     worklet // Expose worklet for cleanup if needed
   }
 }

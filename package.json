@@ -31,6 +31,12 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "overrides": {
+    "sodium-native": "^5.2.0",
+    "bare-os": "^3.9.3",
+    "bare-pipe": "^4.4.0",
+    "bare-url": "^2.5.5"
+  },
   "author": "Fred Lin <gasolin+barechat@gmail.com>",
   "license": "MIT",
   "repository": {

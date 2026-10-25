@@ -1,6 +1,6 @@
 {
   "name": "barechat-monorepo",
-  "version": "2.0.3",
+  "version": "3.1.2",
   "description": "Anonymous chat anywhere with commandline - Monorepo",
   "type": "module",
   "workspaces": [

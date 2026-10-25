@@ -1,6 +1,6 @@
 {
   "name": "barechat-web",
-  "version": "3.0.1",
+  "version": "3.1.2",
   "description": "Anonymous chat anywhere with localhost web interface - Web Package",
   "main": "index.js",
   "type": "module",
@@ -39,8 +39,8 @@
     "bare-http1": "^4.6.3",
     "bare-process": "^4.5.1",
     "bare-ws": "^3.2.0",
-    "barechat": "^3.1.1",
-    "barechat-core": "^3.0.1"
+    "barechat": "^3.1.2",
+    "barechat-core": "^3.1.2"
   },
   "imports": {
     "http": {

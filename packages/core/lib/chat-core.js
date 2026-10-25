@@ -2,7 +2,7 @@ import Hyperswarm from 'hyperswarm'
 import b4a from 'b4a'
 import { randomBytes, hash } from 'hypercore-crypto'
 
-const version = '3.0.1'
+const version = '3.1.2'
 
 console.log(`[core] Loading BareChat Core v${version}...`)
 

@@ -8,12 +8,12 @@
     "barechat-rpc": "index.js"
   },
   "dependencies": {
-    "bare-rpc": "^1.0.0",
-    "bare-net": "^1.0.0",
-    "bare-fs": "^2.0.0",
-    "bare-path": "^2.0.0",
-    "bare-process": "^4.2.1",
-    "bare-os": "^2.0.0"
+    "bare-rpc": "^1.3.8",
+    "bare-net": "^2.3.3",
+    "bare-fs": "^4.8.4",
+    "bare-path": "^3.1.2",
+    "bare-process": "^4.5.1",
+    "bare-os": "^3.9.3"
   },
   "keywords": [
     "bare",

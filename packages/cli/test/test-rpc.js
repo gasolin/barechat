@@ -1,8 +1,8 @@
 #!/usr/bin/env bare
 // Test script to verify RPC message forwarding to chat room
 
-import { getBackend } from './lib/chat-core.js'
-import { RPCServer } from './lib/rpc-server.js'
+import { getBackend } from 'barechat-core'
+import { RPCServer } from '../lib/rpc-server.js'
 import { randomBytes } from 'hypercore-crypto'
 import b4a from 'b4a'
 

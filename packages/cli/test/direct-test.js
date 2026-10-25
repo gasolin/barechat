@@ -1,8 +1,8 @@
 #!/usr/bin/env bare
 // Direct test to verify RPC message forwarding
 
-import { getBackend } from './lib/chat-core.js'
-import { RPCServer } from './lib/rpc-server.js'
+import { getBackend } from 'barechat-core'
+import { RPCServer } from '../lib/rpc-server.js'
 
 console.log('🧪 Direct RPC test...')
 

@@ -35,24 +35,26 @@ Send messages from Terminal 2:
 npx barechat-rpc client "Hello from terminal!"
 ```
 
-### Integration with Barechat
+### Integration with Barechat (Testing on the Same Machine)
 
-Start barechat on Device A (Terminal 1):
-```bash
-npx barechat soccer
-```
+When testing multiple `barechat` instances on the **same machine**, keep the RPC server enabled on the first instance and disable it (`--no-rpc`) on the second instance so they don't conflict over `/tmp/barechat-rpc.sock`:
 
-Start barechat on Device B (Terminal 1):
-```bash
-npx barechat soccer
-```
+1. Start `barechat` with RPC server enabled (Terminal 1):
+   ```bash
+   npx barechat soccer
+   ```
 
-Send messages from Device A (Terminal 2):
-```bash
-npx barechat-rpc client "Hello from terminal!"
-```
+2. Start a second `barechat` instance with `--no-rpc` (Terminal 2):
+   ```bash
+   npx barechat --no-rpc soccer
+   ```
 
-Both barechat instances will receive the broadcast message.
+3. Send messages via RPC client (Terminal 3):
+   ```bash
+   npx barechat-rpc client "Hello from terminal!"
+   ```
+
+Terminal 1 receives the RPC message and broadcasts it over Hyperswarm so both `barechat` instances display the message. Conversely, when Terminal 2 sends a message in the chat room, Terminal 1's RPC server notifies any connected RPC clients via `client.onmessage`.
 
 ## Programmatic Usage
 
@@ -188,12 +190,12 @@ bare index.js client "Test message"
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `bare-rpc` | ^1.0.0 | RPC protocol implementation |
-| `bare-net` | ^1.0.0 | Network socket support |
-| `bare-fs` | ^2.0.0 | File system operations |
-| `bare-path` | ^2.0.0 | Path utilities |
-| `bare-process` | ^4.2.1 | Process management |
-| `bare-os` | ^2.0.0 | OS utilities |
+| `bare-rpc` | ^1.3.8 | RPC protocol implementation |
+| `bare-net` | ^2.3.3 | Network socket support |
+| `bare-fs` | ^4.8.4 | File system operations |
+| `bare-path` | ^3.1.2 | Path utilities |
+| `bare-process` | ^4.5.1 | Process management |
+| `bare-os` | ^3.9.3 | OS utilities |
 
 ## Error Handling
 

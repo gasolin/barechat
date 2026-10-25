@@ -38,10 +38,10 @@ Open your browser and navigate to http://localhost:54321
 
 You can send `soccer`, `p2p` or any string you like to discover the room.
 
-In another terminal use the same command, or the hashcode received from the first terminal's output:
+In another terminal use the same command, or the hashcode received from the first terminal's output (when running multiple instances on the **same machine**, pass `--no-rpc` to the second instance to avoid conflicting on the `/tmp/barechat-rpc.sock` socket):
 
 ```sh
-> npx barechat-web 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
+> npx barechat-web --no-rpc 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 ==================
 BareChat Web server started on port 54322
 Open your browser and navigate to http://localhost:54322

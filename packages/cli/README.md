@@ -33,10 +33,10 @@ To test this chat app, in one terminal run:
 
 You can send `soccer`, `p2p` or any string you like to discover the room.
 
-In another terminal use the same command, or the hashcode received from the first terminal's output:
+In another terminal use the same command, or the hashcode received from the first terminal's output (if testing on the **same machine**, add `--no-rpc` to the second instance so it doesn't overwrite the `/tmp/barechat-rpc.sock` Unix socket used by the first instance):
 
 ```sh
-> npx barechat 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
+> npx barechat --no-rpc 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 [info] Joined chat room 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 ```
 

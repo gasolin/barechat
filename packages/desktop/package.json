@@ -8,10 +8,10 @@
         "pear-interface": "^1.0.0"
     },
     "dependencies": {
-        "b4a": "^1.7.3",
+        "b4a": "^1.9.0",
         "barechat-core": "^3.0.0",
-        "hypercore-crypto": "^3.6.1",
-        "hyperswarm": "^4.14.0"
+        "hypercore-crypto": "^3.7.0",
+        "hyperswarm": "^4.17.2"
     },
     "pear": {
         "name": "barechat-desktop",

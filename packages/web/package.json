@@ -36,10 +36,10 @@
     "access": "public"
   },
   "dependencies": {
-    "bare-http1": "^4.1.0",
-    "bare-process": "^4.2.1",
-    "bare-ws": "^2.0.3",
-    "barechat": "^3.0.0",
+    "bare-http1": "^4.6.3",
+    "bare-process": "^4.5.1",
+    "bare-ws": "^2.1.0",
+    "barechat": "^3.1.0",
     "barechat-core": "^3.0.0"
   },
   "imports": {

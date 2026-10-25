@@ -67,19 +67,44 @@ npm i -g barechat
 bun add -g barechat
 ```
 
-To test this chat app, in one terminal run:
+To test this chat app on the **same machine**, open two terminals. Because `barechat` starts a local RPC server on `/tmp/barechat-rpc.sock` by default, add `--no-rpc` to the second instance to avoid socket conflicts:
+
+In **Terminal 1**:
 
 ```sh
 > barechat
-[info] Created new chat room: a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+[info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+[info] RPC server started
 ```
 
-In another terminal use the hashcode received from the first terminal's output:
+In **Terminal 2**, use the topic/hashcode from Terminal 1 with `--no-rpc`:
 
 ```sh
-> barechat a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+> barechat --no-rpc a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
 [info] Joined chat room a1b2c35fbeb452bc900c5a1c00306e52319a3159317312f54fe5a246d634f51a
+[info] RPC server disabled
 ```
+
+### Testing Across Interfaces on the Same Machine
+
+You can also test P2P chat and RPC across CLI, Web, Desktop, and RPC clients locally from the repository:
+
+1. **Terminal 1 (CLI with RPC server enabled)**:
+   ```bash
+   bare packages/cli/index.js soccer
+   ```
+2. **Terminal 2 (CLI or Web with `--no-rpc`)**:
+   ```bash
+   # Either run a second CLI instance:
+   bare packages/cli/index.js --no-rpc soccer
+
+   # Or run the Web UI (starts on a random localhost port):
+   bare packages/web/index.js --no-rpc soccer
+   ```
+3. **Terminal 3 (Optional - Send message via RPC to Terminal 1)**:
+   ```bash
+   bare packages/rpc/index.js client "Hello via RPC!"
+   ```
 
 ## 🛠️ Development
 

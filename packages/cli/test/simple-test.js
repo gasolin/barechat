@@ -1,9 +1,9 @@
 #!/usr/bin/env bare
 // Simple test for RPC message forwarding without TTY
 
-import { getBackend } from './lib/chat-core.js'
-import { RPCServer } from './lib/rpc-server.js'
-import { createFileStore } from './lib/helper.js'
+import { getBackend } from 'barechat-core'
+import { RPCServer } from '../lib/rpc-server.js'
+import { createFileStore } from '../lib/helper.js'
 
 console.log('🧪 Testing RPC message forwarding...')
 

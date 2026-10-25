@@ -55,8 +55,8 @@ Bare
   })
 
 const rl = readline.createInterface({
-  input: new tty.ReadStream(0),
-  output: new tty.WriteStream(1)
+  input: process.stdin,
+  output: process.stdout
 })
 
 // When there's a new connection, listen for new messages, and output them to the terminal
@@ -83,7 +83,9 @@ if (rpcServer) {
   console.log('[info] RPC server disabled')
 }
 
-rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
+if (rl.input.setMode) {
+  rl.input.setMode(tty.constants.MODE_RAW) // Enable raw input mode for efficient key reading
+}
 rl.on('data', line => {
   sendMessage(line)
   // Store own messages too

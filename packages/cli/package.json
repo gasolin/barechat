@@ -34,6 +34,9 @@
     "bare-tty": "^5.2.1",
     "shelljs": "^0.10.0"
   },
+  "devDependencies": {
+    "bare": "^1.28.0"
+  },
   "imports": {
     "crypto": {
       "bare": "bare-crypto",

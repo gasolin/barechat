@@ -33,15 +33,15 @@ const versionParts = version.split('.').map(Number)
 const [major, minor, patch] = versionParts
 // console.log('>>> ', version, major, minor, patch)
 
-// Check if version is greater than 1.21
+// Check if version is >= 1.28.0 (required by bare-fs >= 4.8.4)
 const requiredMajor = 1
-const requiredMinor = 21
+const requiredMinor = 28
 
-const isVersionValid = major > requiredMajor || (major === requiredMajor && minor > requiredMinor)
+const isVersionValid = major > requiredMajor || (major === requiredMajor && minor >= requiredMinor)
 
 if (!isVersionValid) {
   shell.echo(`Error: bare version ${versionString} is too old.`)
-  shell.echo(`Required bare > v${requiredMajor}.${requiredMinor}`)
+  shell.echo(`Required bare >= v${requiredMajor}.${requiredMinor}.0`)
   shell.echo('Please update bare globally using npm:')
   shell.echo('npm i -g bare')
   shell.exit(1)

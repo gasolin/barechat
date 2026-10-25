@@ -110,19 +110,20 @@ The system SHALL work consistently across modern web browsers.
 - **AND** connection handling works as expected
 - **AND** message delivery is reliable
 
-### Requirement: Integration with CLI Package
-The system SHALL seamlessly integrate with the CLI package for P2P networking.
+### Requirement: Integration with Core and CLI Packages
+The system SHALL integrate with `barechat-core` for P2P networking and `barechat` CLI package for shared utilities and RPC support.
 
-#### Scenario: Shared P2P protocol
+#### Scenario: Shared P2P protocol via core package
 - **WHEN** web and CLI clients participate in the same room
-- **THEN** messages are compatible between platforms
+- **THEN** both use `barechat-core` for P2P networking
+- **AND** messages are compatible between platforms
 - **AND** peer identification works consistently
 - **AND** room topics match exactly
 
 #### Scenario: Dependency management
 - **WHEN** the web package is installed
-- **THEN** it correctly depends on the CLI package
-- **AND** uses CLI package's P2P networking capabilities
+- **THEN** it depends on `barechat-core` for P2P networking capabilities
+- **AND** depends on `barechat` (`barechat/lib/exports`) for `parseArgs` and `RPCServer`
 - **AND** maintains version compatibility
 
 #### Scenario: Message format consistency
@@ -135,7 +136,7 @@ The system SHALL seamlessly integrate with the CLI package for P2P networking.
 The system SHALL provide RPC server functionality for terminal-to-web communication.
 
 #### Scenario: RPC server startup
-- **WHEN** the web server starts (unless disabled with --noRpc)
+- **WHEN** the web server starts (unless disabled with `--no-rpc`)
 - **THEN** the RPC server starts automatically
 - **AND** creates a Unix domain socket at the temporary directory
 - **AND** listens for RPC client connections

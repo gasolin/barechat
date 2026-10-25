@@ -26,36 +26,36 @@ The BareChat Mobile package provides a mobile-first implementation of the BareCh
 - **What**: Use `react-native-bare-kit` to execute the P2P networking logic.
 - **Why**: Allows running the Bare runtime (which `barechat-core` depends on) inside a mobile app as a separate worklet.
 
-### Decision: tiny-buffer-rpc over IPC
-- **What**: Use `tiny-buffer-rpc` and `framed-stream` for communication between the UI and the P2P core.
-- **Why**: Lightweight, efficient, and compatible with both Bare and React Native environments.
+### Decision: bare-rpc over BareKit IPC
+- **What**: Use `bare-rpc` (wrapped in `ChatRPC`) over `BareKit.IPC` / `worklet.IPC` for communication between the React Native UI and the P2P core worklet.
+- **Why**: Lightweight, bidirectional, and natively compatible with both Bare and React Native environments.
 
 ### Decision: bare-pack for Worklet Bundling
-- **What**: Use `bare-pack` to bundle the worklet code and its dependencies.
-- **Why**: Resolves module resolution issues in the worklet environment and allows pre-loading the core logic.
+- **What**: Use `bare-pack` to bundle the worklet code (`packages/core/main.js`) and its dependencies into `packages/core/main.bundle.js`.
+- **Why**: Resolves module resolution issues in the worklet environment and allows pre-loading the core logic for iOS and Android targets.
 
 ## Architecture
 
 ### Components
 
 #### React Native UI (Main Thread)
-- **GiftedChat**: Used for the chat interface.
-- **RPC Client**: Communicates with the worklet to send/receive messages and room events.
+- **GiftedChat**: Used for the chat interface (`app/index.tsx`).
+- **RPC Bridge (`packages/core/index.ts` & `packages/rpc.js`)**: Communicates with the worklet via `ChatRPC` (`bare-rpc`) to join rooms, send messages, and receive incoming swarm messages (`ON_MESSAGE`).
 - **State Management**: Handles active room, message history, and connection status.
 
 #### BareKit Worklet (Core Thread)
-- **Bare Runtime**: Isolated environment for running JavaScript logic.
+- **Bare Runtime**: Isolated environment for running JavaScript logic (`packages/core/main.js`).
 - **barechat-core**: The actual P2P networking implementation.
-- **RPC Server**: Exposes networking methods (join room, send message) to the UI.
+- **RPC Handler**: Exposes networking methods (`JOIN_ROOM`, `SEND_MESSAGE`) to the UI and pushes incoming messages (`ON_MESSAGE`) via `rpc.emitMessage`.
 
 ### Communication Flow
 
-1. **Initialization**: React Native starts the worklet using a bundled JS file (`main.bundle.js`).
-2. **RPC Setup**: Both sides initialize `framed-stream` over the `IPC` channel and set up `tiny-buffer-rpc`.
-3. **Room Join**: UI calls `joinRoom` via RPC; worklet initializes Hyperswarm and joins the room.
+1. **Initialization**: React Native starts the worklet using the bundled JS file (`packages/core/main.bundle.js`).
+2. **RPC Setup**: Both sides initialize `ChatRPC` (`bare-rpc`) directly over the `IPC` channel (`worklet.IPC` / `BareKit.IPC`).
+3. **Room Join**: UI calls `joinRoom` via RPC (`COMMANDS.JOIN_ROOM`); worklet initializes Hyperswarm via `barechat-core` and joins the room.
 4. **Message Flow**:
-   - Outgoing: UI sends message via RPC -> Worklet pushes to swarm.
-   - Incoming: Swarm receives message -> Worklet emits RPC call/event to UI -> UI updates state.
+   - Outgoing: UI sends message via RPC (`COMMANDS.SEND_MESSAGE`) -> Worklet broadcasts to swarm via `backend.sendMessage`.
+   - Incoming: Swarm receives message -> Worklet calls `rpc.emitMessage` (`COMMANDS.ON_MESSAGE`) -> UI updates GiftedChat state.
 
 ## Resource Management
 

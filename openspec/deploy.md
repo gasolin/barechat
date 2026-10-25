@@ -31,6 +31,7 @@ Always publish the core package first if there are changes to it, as the CLI and
 1.  **`barechat-core`** (packages/core)
 2.  **`barechat`** (packages/cli)
 3.  **`barechat-web`** (packages/web)
+4.  **`barechat-rpc`** (packages/rpc)
 
 ### 3. Publishing Commands
 
@@ -51,6 +52,12 @@ npm publish --access public
 #### `barechat-web`
 ```bash
 cd packages/web
+npm publish --access public
+```
+
+#### `barechat-rpc`
+```bash
+cd packages/rpc
 npm publish --access public
 ```
 

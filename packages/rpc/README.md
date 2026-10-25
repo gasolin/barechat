@@ -10,9 +10,10 @@ Terminal-to-terminal communication using bare-rpc.
 
 - 🚀 **Fast IPC**: Unix domain sockets for efficient local communication
 - 📡 **Broadcasting**: Send messages to multiple connected clients
+- 🔔 **Event Notifications**: Receive real-time notifications when new P2P swarm messages arrive
 - 🔌 **Simple API**: Easy-to-use client-server interface
 - 🛡️ **Type-safe**: Schema-based RPC with validation
-- 🔧 **Cross-platform**: Works on Unix-like systems with Node.js/Bun
+- 🔧 **Bare Runtime**: Built on `bare-rpc` and Bare runtime modules
 
 ## Installation
 
@@ -77,6 +78,11 @@ import { RPCClient } from 'barechat-rpc'
 
 const client = new RPCClient()
 
+// Optional: listen for incoming P2P swarm message notifications from the server
+client.onmessage = (data) => {
+  console.log(`[${data.memberId}] ${data.message}`)
+}
+
 try {
   await client.connect()
   
@@ -106,26 +112,33 @@ try {
 
 ### RPCClient
 
-| Method | Description | Returns |
+| Method / Property | Description | Returns / Type |
 |--------|-------------|---------|
 | `constructor()` | Create a new RPC client instance | `RPCClient` |
 | `connect()` | Connect to the RPC server | `Promise<void>` |
 | `sendMessage(message)` | Send a message and get server response | `Promise<object>` |
 | `broadcast(message)` | Broadcast a message to all clients | `Promise<object>` |
+| `onmessage` | Callback triggered when server pushes a `RECEIVE_MESSAGE` (command `5`) notification | `((data: { memberId: string, message: string }) => void) \| null` |
 | `disconnect()` | Close the connection | `void` |
 
-### Response Format
+### Response & Notification Format
 
 ```javascript
-// sendMessage response
+// sendMessage response (Command 1)
 {
   success: true,
   echo: "your message"
 }
 
-// broadcast response
+// broadcast response (Command 2)
 {
   received: true
+}
+
+// onmessage notification payload (Command 5)
+{
+  memberId: "a1b2c3",
+  message: "incoming message from P2P swarm"
 }
 ```
 
@@ -163,19 +176,12 @@ The test script provides:
 
 Start the server in one terminal:
 ```bash
-node -e "import('./lib/rpc.js').then(m => new m.RPCServer().start())"
+bare index.js server
 ```
 
 Test with client in another terminal:
 ```bash
-node -e "
-import('./lib/rpc.js').then(async m => {
-  const client = new m.RPCClient()
-  await client.connect()
-  await client.sendMessage('Test message')
-  client.disconnect()
-})
-"
+bare index.js client "Test message"
 ```
 
 ## Dependencies

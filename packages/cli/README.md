@@ -40,8 +40,7 @@ In another terminal use the same command, or the hashcode received from the firs
 [info] Joined chat room 8f27f432fcbaa4b5180a1cc7a8fa166a93cda3c1bce6f19922dd519d02f4bb39
 ```
 
-> And its fully compatible to chat with [barechat-web](https://github.com/gasolin/barechat-web)
-
+> And its fully compatible to chat with [barechat-web](../web)
 
 Or you can simply call
 
@@ -61,7 +60,14 @@ npx barechat --store
 npx barechat --store /tmp/chatlog.txt
 ```
 
-If you want to disable the RPC server, can add `--no-rpc` argument:
+If you want to specify custom DHT bootstrap servers, can add `--bootstrap` argument:
+
+```sh
+# Use custom bootstrap server(s)
+npx barechat --bootstrap 192.168.0.123:55688 soccer
+```
+
+By default, `barechat` starts a local RPC server (on `/tmp/barechat-rpc.sock`) that allows local processes (via [`barechat-rpc`](../rpc)) to send messages and receive notifications for incoming P2P swarm messages. If you want to disable the RPC server, can add `--no-rpc` argument:
 
 ```sh
 # Start chat without RPC server

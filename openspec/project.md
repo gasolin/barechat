@@ -1,42 +1,44 @@
 # Project Context
 
 ## Purpose
-BareChat is an anonymous, peer-to-peer chat application that enables users to create and join chat rooms without requiring any central server, using distributed networking technology for fully decentralized communication. The project provides both terminal-based and web-based interfaces for maximum accessibility.
+BareChat is an anonymous, peer-to-peer chat application that enables users to create and join chat rooms without requiring any central server, using distributed networking technology for fully decentralized communication. The project provides terminal-based, web-based, desktop, and mobile interfaces for maximum accessibility.
 
 ## Monorepo Structure
 This is a Bun-based monorepo containing:
-- **packages/cli**: Terminal-based BareChat application
-- **packages/web**: Web-based interface with WebSocket bridge
-- **packages/core**: Shared P2P networking logic and core chat functionality
-- **packages/desktop**: Pear-based desktop application (P2P-first)
-- **packages/rpc**: Terminal-to-terminal communication using bare-rpc
-- **packages/ui**: (Future) Shared UI components
+- **packages/core**: Shared P2P networking logic and core chat functionality (`barechat-core`)
+- **packages/cli**: Terminal-based BareChat application (`barechat`)
+- **packages/web**: Web-based interface with WebSocket bridge (`barechat-web`)
+- **packages/desktop**: Pear-based desktop application (`barechat-desktop`)
+- **packages/mobile**: React Native (Expo) mobile application with BareKit worklet (`barechat-mobile`)
+- **packages/rpc**: Terminal-to-terminal communication using bare-rpc (`barechat-rpc`)
 
 ## Tech Stack
 
 ### Runtime & Build
 - **Package Manager**: Bun (monorepo management, bundling, development)
-- **CLI Runtime**: Bare (JavaScript runtime for embedded systems)
+- **CLI & Web Server Runtime**: Bare (JavaScript runtime for embedded systems)
 - **Desktop Runtime**: Pear (P2P-first runtime for desktop)
-- **Web Runtime**: Browser ES Modules
+- **Mobile Runtime**: React Native (Expo) + `react-native-bare-kit` worklet
+- **Web UI Runtime**: Browser ES Modules
 - **Build System**: Bun workspaces and scripts
 
 ### Core Technologies
 - **Networking**: Hyperswarm (P2P network discovery and connections)
 - **Cryptography**: Hypercore-crypto (portable cryptographic primitives)
-- **Real-time**: WebSocket (web-to-P2P bridge)
+- **Real-time**: WebSocket (`bare-ws` web-to-P2P bridge) and `bare-rpc` (local IPC)
 - **Buffer Operations**: b4a (buffer-to-string conversions)
 - **Core Package**: barechat-core (shared P2P networking functionality)
 
 ### CLI Package
 - **Terminal Interface**: Bare-readline, Bare-tty
 - **File System**: Bare-fs, Bare-path
+- **IPC / RPC**: Bare-rpc, Bare-net, Bare-os
 - **Build Tools**: ShellJS
 
 ### Web Package
-- **UI Framework**: Vanilla JavaScript with DOM manipulation
-- **WebSocket**: ws library for server implementation
-- **Development**: Hot reload and development server
+- **UI Framework**: Vanilla JavaScript with Notion-inspired DOM UI
+- **HTTP & WebSocket**: `bare-http1` and `bare-ws` for server implementation
+- **IPC / RPC**: Shared `RPCServer` from `barechat/lib/exports`
 
 ## Project Conventions
 
@@ -64,11 +66,11 @@ This is a Bun-based monorepo containing:
 - **Observer Pattern**: Event listeners for real-time updates
 
 ### Testing Strategy
-- Manual testing through terminal and web interfaces
-- Integration testing between CLI and web clients
-- Cross-package compatibility testing
-- API documentation generation using JSDoc-to-markdown
-- Future: Automated test framework implementation
+- Automated unit tests for `barechat-core` using `brittle`
+- Automated RPC and notification tests in `packages/cli/test/` and `packages/rpc/test/`
+- Integration testing between CLI, Web, and RPC (`packages/web/test/test-rpc-integration.sh`)
+- Manual testing across terminal, web, desktop, and mobile interfaces
+- API documentation generation using `jsdoc-to-markdown`
 
 ### Git Workflow
 - Standard Git workflow with conventional commits
@@ -129,9 +131,12 @@ This is a Bun-based monorepo containing:
 - **barechat-core**: Core P2P networking functionality
 - **shelljs**: Cross-platform shell command execution
 - **bare-fs**: File system operations
+- **bare-net**: Unix domain socket server for RPC
+- **bare-os**: OS utilities for socket paths
 - **bare-path**: Path manipulation
 - **bare-process**: Process control
 - **bare-readline**: Terminal input handling
+- **bare-rpc**: RPC protocol implementation for local IPC and notifications
 - **bare-tty**: Terminal control
 
 ### RPC Package Dependencies
@@ -145,15 +150,28 @@ This is a Bun-based monorepo containing:
 ### Desktop Package Dependencies
 - **barechat-core**: Core P2P networking functionality
 - **b4a**: Buffer utilities
+- **hypercore-crypto**: Cryptographic primitives
 - **hyperswarm**: P2P networking
+- **pear-interface**: Pear desktop runtime interface
+
+### Mobile Package Dependencies
+- **expo / react-native**: Cross-platform mobile framework
+- **react-native-bare-kit**: Bare runtime worklet integration for React Native
+- **react-native-gifted-chat**: Mobile chat UI components
+- **barechat-core**: Core P2P networking functionality (bundled via `bare-pack`)
+- **bare-rpc**: IPC communication between React Native UI and BareKit worklet
+- **b4a**: Buffer utilities
 
 ### Web Package Dependencies
-- **ws**: WebSocket implementation for server-client communication
-- **barechat**: CLI package for RPC and helper functionality
+- **bare-http1**: HTTP server implementation for Bare runtime
+- **bare-ws**: WebSocket implementation for server-client communication
+- **bare-process**: Process control
+- **barechat**: CLI package for shared `RPCServer`, `parseArgs`, and helper functionality
 - **barechat-core**: Core P2P networking functionality
 
 ### Development Tools
-- **bun**: Package manager, bundler, and development server
+- **bun**: Package manager, bundler, and workspace runner
+- **brittle**: Test runner for `barechat-core`
 - **jsdoc-to-markdown**: API documentation generation
 - **npm**: Package distribution
 
@@ -163,7 +181,9 @@ This is a Bun-based monorepo containing:
 
 ## Package-Specific Documentation
 - **Core Package**: See `openspec/specs/core/spec.md` for core P2P functionality
-- **CLI Package**: See `openspec/specs/cli/spec.md` for CLI-specific details
-- **Web Package**: See `openspec/specs/web/spec.md` for web-specific details
+- **CLI Package**: See `openspec/specs/cli/spec.md` and `openspec/packages/cli/project.md` for CLI-specific details
+- **Web Package**: See `openspec/specs/web/spec.md` and `openspec/packages/web/project.md` for web-specific details
+- **Desktop Package**: See `openspec/specs/desktop/design.md` for desktop architecture and design
+- **Mobile Package**: See `openspec/specs/mobile/design.md` for mobile architecture and design
 - **RPC Package**: See `openspec/specs/rpc/spec.md` and `openspec/specs/rpc/design.md` for RPC-specific details
 - **Deployment Guide**: See `openspec/deploy.md` for instructions on publishing packages to NPM

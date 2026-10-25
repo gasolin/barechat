@@ -103,8 +103,8 @@ const wsServer = createWebSocketServer({
 ## Reference
 
 - Built on [barechat-core](../core) - the reusable P2P networking logic
-- Uses [RPGUI](https://github.com/RonenNess/RPGUI#rpgui) for UI components
-- WebSocket implementation for real-time communication
+- Notion-inspired clean UI with responsive layout and click-to-copy messages
+- WebSocket implementation (`bare-ws`) and HTTP server (`bare-http1`) for real-time communication
 
 ## License
 

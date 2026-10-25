@@ -249,6 +249,20 @@
             box-shadow: var(--notion-shadow);
         }
     </style>
+    <script>
+        window.addEventListener('error', (event) => {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:red;color:white;z-index:9999;padding:10px;font-size:12px;word-break:break-all;';
+            errorDiv.textContent = 'Error: ' + event.message + ' at ' + event.filename + ':' + event.lineno;
+            document.body.appendChild(errorDiv);
+        });
+        window.addEventListener('unhandledrejection', (event) => {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position:fixed;top:50px;left:0;width:100%;background:orange;color:white;z-index:9999;padding:10px;font-size:12px;word-break:break-all;';
+            errorDiv.textContent = 'Promise Error: ' + event.reason;
+            document.body.appendChild(errorDiv);
+        });
+    </script>
 </head>
 
 <body>

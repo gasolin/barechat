@@ -25,18 +25,18 @@ BareChat is an anonymous, peer-to-peer chat application that runs in the termina
 - Console logging with prefixed categories: `[info]`, `[error]`
 
 ### Architecture Patterns
-- **Modular Design**: Core functionality separated into `chat-core.js`, helper utilities in `helper.js`
+- **Modular Design**: Core P2P networking delegated to `barechat-core`, helper utilities in `lib/helper.js`, local RPC server in `lib/rpc-server.js`, and shared exports in `lib/exports.js`
 - **Functional Programming**: Heavy use of higher-order functions and closures
-- **Event-Driven**: Hyperswarm event handling for peer connections and messages
-- **Factory Pattern**: `getBackend()` function creates configured instances
-- **Command Pattern**: CLI argument parsing and command execution
-- **Observer Pattern**: Event listeners for swarm updates and peer connections
+- **Event-Driven**: Hyperswarm event handling for peer connections and messages, plus local RPC notifications (`notifyAll`)
+- **Factory Pattern**: `getBackend()` function from `barechat-core` creates configured instances
+- **Command Pattern**: CLI argument parsing (`--store`, `--bootstrap`, `--no-rpc`) and command execution
+- **Observer Pattern**: Event listeners for swarm updates, peer connections, and RPC clients
 
 ### Testing Strategy
+- Automated RPC and notification tests in `packages/cli/test/` (`test-rpc.js`, `test-rpc-notify.js`, etc.)
 - Manual testing through terminal interactions
-- Integration testing between multiple terminal instances
-- API documentation generation using JSDoc-to-markdown
-- No automated test framework currently implemented
+- Integration testing between multiple terminal instances and RPC clients
+- API documentation generation using `jsdoc-to-markdown`
 
 ### Git Workflow
 - Standard Git workflow with conventional commits
@@ -86,17 +86,17 @@ BareChat is an anonymous, peer-to-peer chat application that runs in the termina
 ## External Dependencies
 
 ### Core Dependencies
-- **hyperswarm**: P2P networking and peer discovery
-- **hypercore-crypto**: Cryptographic primitives for key generation
-- **b4a**: Buffer utilities for data conversion
+- **barechat-core**: Shared P2P networking and chat functionality (`hyperswarm`, `hypercore-crypto`, `b4a`)
 - **shelljs**: Cross-platform shell command execution
 
 ### Bare Runtime Modules
-- **bare-crypto**: Cryptographic functions
 - **bare-fs**: File system operations
+- **bare-net**: Network socket support for local Unix domain socket RPC server
+- **bare-os**: OS utilities for temporary directory access
 - **bare-path**: Path manipulation
 - **bare-process**: Process control
 - **bare-readline**: Terminal input handling
+- **bare-rpc**: RPC protocol implementation for local IPC and event notifications
 - **bare-tty**: Terminal control
 
 ### Development Tools

@@ -34,10 +34,10 @@ The RPC package provides terminal-to-terminal communication capabilities using U
 - **Rationale**: bare-rpc provides the right balance of simplicity and functionality for Bare environment
 
 ### Decision: Command-based Message Types
-- **What**: Use numeric command IDs (1=sendMessage, 2=broadcast)
+- **What**: Use numeric command IDs (`1` = `SEND_MESSAGE`, `2` = `BROADCAST`, `5` = `RECEIVE_MESSAGE`)
 - **Why**: Simple, efficient, and extensible
 - **Alternatives considered**: String-based commands, JSON message types
-- **Rationale**: Numeric commands are faster to parse and easier to extend
+- **Rationale**: Numeric commands are faster to parse and easier to extend, supporting both client-to-server requests (`1`, `2`) and server-to-client asynchronous notifications (`5`)
 
 ### Decision: Socket Path Management
 - **What**: Use OS temporary directory with fixed socket name
@@ -51,13 +51,16 @@ The RPC package provides terminal-to-terminal communication capabilities using U
 
 #### RPCServer
 - Creates and manages Unix domain socket
+- Tracks active client RPC connections in a `Set`
 - Handles incoming client connections
-- Processes RPC commands and returns responses
+- Processes RPC commands (`SEND_MESSAGE`, `BROADCAST`) and returns responses
+- Pushes asynchronous event notifications (`notifyAll` via `RECEIVE_MESSAGE`) to connected clients
 - Manages connection lifecycle
 
 #### RPCClient  
 - Connects to RPC server socket
 - Sends RPC commands and receives responses
+- Listens for incoming `RECEIVE_MESSAGE` notifications and invokes `this.onmessage(data)`
 - Handles connection errors and cleanup
 - Provides high-level API for messaging
 

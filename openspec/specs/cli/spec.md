@@ -6,18 +6,23 @@ Provide a terminal-based interface for anonymous, peer-to-peer chat functionalit
 ## Requirements
 
 ### Requirement: Peer-to-Peer Chat
-The system SHALL provide anonymous, peer-to-peer chat functionality through a terminal interface.
+The system SHALL provide anonymous, peer-to-peer chat functionality through a terminal interface using the `barechat-core` package for P2P networking.
+
+#### Scenario: Core package integration
+- **WHEN** the CLI application starts
+- **THEN** the system imports `getBackend` from `barechat-core` package
+- **AND** uses the core package for all P2P networking operations
 
 #### Scenario: Room creation and joining
 - **WHEN** a user starts barechat with a room name
-- **THEN** the system generates or resolves the topic hash for the room
-- **AND** creates a Hyperswarm instance for P2P networking
+- **THEN** the system generates or resolves the topic hash for the room using core utilities
+- **AND** creates a Hyperswarm instance through the core package
 - **AND** begins listening for peer connections on that topic
 
 #### Scenario: Message sending and receiving
 - **WHEN** a user types a message and presses enter
 - **THEN** the system formats the message with timestamp and peer ID
-- **AND** broadcasts the message to all connected peers
+- **AND** broadcasts the message to all connected peers via `barechat-core`
 - **AND** displays the message in the local chat interface
 - **AND** displays received messages from other peers in real-time
 
@@ -112,6 +117,18 @@ The system SHALL run consistently across different platforms supported by Bare r
 
 #### Scenario: Network environment adaptation
 - **WHEN** operating in different network conditions
-- **THEN** the system adapts to available bootstrap servers
+- **THEN** the system adapts to available bootstrap servers (including `--bootstrap` flag)
 - **AND** functions with or without internet connectivity
 - **AND** maintains P2P connections when possible
+
+### Requirement: Local RPC Server and Event Notification
+The system SHALL start a local RPC server by default (unless `--no-rpc` is provided) to accept messages from local RPC clients and notify connected RPC clients when new messages arrive from the P2P swarm.
+
+#### Scenario: Swarm message notification to RPC clients
+- **WHEN** a new message is received from a remote peer in the P2P swarm
+- **THEN** the CLI's RPC server broadcasts a notification (`RECEIVE_MESSAGE`, command ID `5`) to all connected RPC clients
+- **AND** the notification payload contains `{ memberId, message }`
+
+#### Scenario: Loop prevention for local and RPC messages
+- **WHEN** a message originates from the local terminal (`memberId === 'me'`) or from an RPC client (`memberId === 'rpc-client'`)
+- **THEN** the RPC server MUST NOT broadcast a notification for that message back to RPC clients

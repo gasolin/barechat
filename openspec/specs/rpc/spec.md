@@ -6,7 +6,7 @@ Provide terminal-to-terminal communication using Unix domain sockets and bare-rp
 ## Requirements
 
 ### Requirement: Terminal-to-Terminal Communication
-The system SHALL provide RPC-based communication between terminal processes using Unix domain sockets.
+The system SHALL provide bi-directional RPC-based communication between terminal processes using Unix domain sockets, supporting both request-response commands and asynchronous server-to-client notifications.
 
 #### Scenario: Server starts and listens
 - **WHEN** a user starts the RPC server
@@ -19,6 +19,7 @@ The system SHALL provide RPC-based communication between terminal processes usin
 - **THEN** the client establishes a socket connection to the server
 - **AND** the client confirms successful connection
 - **AND** the server logs the client connection
+- **AND** the server maintains the connection to allow for asynchronous notifications
 
 #### Scenario: Message exchange
 - **WHEN** a client sends a message through RPC
@@ -32,10 +33,16 @@ The system SHALL provide RPC-based communication between terminal processes usin
 - **AND** the server processes the broadcast
 - **AND** the server returns confirmation of receipt
 
+#### Scenario: Server notification to client
+- **WHEN** the server has data to push to clients (e.g. external P2P swarm message)
+- **THEN** the server SHALL send a notification (`RECEIVE_MESSAGE`, command ID `5`) to all currently connected RPC clients
+- **AND** the clients SHALL receive and handle the notification asynchronously via `client.onmessage`
+
 #### Scenario: Connection cleanup
 - **WHEN** a client disconnects
 - **THEN** the server detects the disconnection
 - **AND** the server logs the client disconnection
+- **AND** the server removes the client from the notification broadcast list
 - **AND** the server cleans up socket resources
 
 #### Scenario: Error handling

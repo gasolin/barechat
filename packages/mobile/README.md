@@ -1,56 +1,48 @@
-# Welcome to your Expo app 👋
+# BareChat Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Anonymous, peer-to-peer mobile chat application built with [React Native (Expo)](https://expo.dev) and [BareKit](https://github.com/holepunchto/react-native-bare-kit).
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Decentralized P2P Networking**: Uses [`barechat-core`](../core) running inside a BareKit worklet for direct Hyperswarm P2P connections.
+- **Cross-Platform Mobile UI**: Built with Expo Router and `react-native-gifted-chat` for iOS and Android.
+- **IPC Bridge via `bare-rpc`**: Seamless communication between the React Native UI thread and the BareKit P2P worklet.
+- **Compatible Protocol**: Chat with users on BareChat CLI, Web, and Desktop.
+
+## Getting Started
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Build core
+2. **Bundle the BareKit P2P Core worklet**
+
+   Before running the mobile app, bundle `packages/core/main.js` (and `barechat-core`) into `packages/core/main.bundle.js` using `bare-pack`:
 
    ```bash
    npm run bundle-core
    ```
 
-3. Start the app
+3. **Start the app**
 
    ```bash
-   npx expo start
+   npm start
+   # or run directly on a simulator/device:
+   npm run ios
+   npm run android
    ```
 
-In the output, you'll find options to open the app in a
+> **Note**: Because this app uses native modules (`react-native-bare-kit`), it requires an Expo development build (`expo run:ios` / `expo run:android`) rather than standard Expo Go.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Architecture
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **`app/`**: Expo Router screens (`app/index.tsx` provides the main chat and room-joining interface).
+- **`packages/core/main.js`**: The BareKit worklet entry point that loads `barechat-core` and handles Hyperswarm connections.
+- **`packages/core/index.ts`**: React Native side worklet loader (`initBareKit`) and RPC bridge.
+- **`packages/rpc.js`**: Shared `ChatRPC` helper built on `bare-rpc` for communication over `BareKit.IPC`.
 
-## Get a fresh project
+## License
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+MIT

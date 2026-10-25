@@ -113,11 +113,12 @@ const joinRoom = swarm =>
  * @param {string} msg - The content of the message.
  * @param {boolean} [local=false] - Indicates whether the message is send from a local device.
  *   Defaults to `false`.
- * @returns {object} A message object with a timestamp, message content, local flag, and type.
+ * @param {string} [messageType='text'] - The type of the message. Defaults to `'text'`.
+ * @returns {object} A message object with a timestamp, message content, local flag, and messageType.
  * @property {Date} timestamp - The date and time the message was created.
  * @property {string} message - The content of the message.
  * @property {boolean} local - Indicates if the message is send from a local device.
- * @property {string} type - The type of the message. Defaults to `text`
+ * @property {string} messageType - The type of the message. Defaults to `'text'`.
  */
 export const createMessage = (msg, local = false, messageType = 'text') => ({
   timestamp: new Date(),

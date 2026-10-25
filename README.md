@@ -6,10 +6,17 @@ Anonymous chat anywhere with commandline
 
 This monorepo contains following packages:
 
+### `barechat-core` (packages/core)
+Core P2P networking and chat logic shared across BareChat applications.
+
+- **Features**: Hyperswarm management, room creation/joining, message formatting, topic utilities
+- **Installation**: `npm i barechat-core` or `bun add barechat-core`
+- **Usage**: `import { getBackend } from 'barechat-core'`
+
 ### `barechat` (packages/cli)
 The main CLI application for BareChat - an anonymous, peer-to-peer chat terminal application.
 
-- **Features**: IRC like anonymous chat, fully p2p, no server required
+- **Features**: IRC like anonymous chat, fully p2p, no server required, optional file logging & local RPC server
 - **Installation**: `npm i -g barechat` or `bun add -g barechat`
 - **Usage**: `barechat` or `barechat <topic-hash>`
 
@@ -26,10 +33,16 @@ Desktop application for BareChat powered by the Pear platform.
 - **Features**: Native desktop experience, integrated window controls, direct P2P networking
 - **Usage**: `cd packages/desktop && pear run --dev .`
 
+### `barechat-mobile` (packages/mobile)
+Mobile application for BareChat built with React Native (Expo) and BareKit.
+
+- **Features**: Native mobile UI (GiftedChat), P2P networking via BareKit worklet and `barechat-core`
+- **Usage**: `cd packages/mobile && npm run bundle-core && npx expo start`
+
 ### `barechat-rpc` (packages/rpc)
 Terminal-to-terminal communication using bare-rpc.
 
-- **Features**: Fast IPC, simple api to send messages to multiple connected clients
+- **Features**: Fast IPC over Unix domain sockets, send/broadcast messages and receive swarm notifications
 - **Usage**: `npx barechat-rpc client "Hello from terminal!"`
 
 ## 🚀 Quick Start
@@ -90,19 +103,19 @@ bun install
 bun install
 
 # Run all packages in development mode
-# bun run dev
+bun run dev:all
 
 # Build all packages
-# bun run build
+bun run build
 
 # Run tests across all packages
-# bun run test
+bun run test
 
 # Run linting across all packages
-# bun run lint
+bun run lint
 
 # Clean all build artifacts
-# bun run clean
+bun run clean
 
 # Run the CLI specifically
 bun run cli
@@ -113,7 +126,7 @@ bun run cli:start
 # Start the Web application
 bun run web:start
 
-# Generate documentation
+# Generate API documentation
 bun run doc
 ```
 
@@ -129,9 +142,6 @@ bun run --filter=barechat dev
 
 # Example: run Web package in development mode
 bun run --filter=barechat-web dev
-
-# Example: generate docs for CLI package
-bun run --filter=barechat doc
 ```
 
 ## 📁 Project Structure
@@ -139,23 +149,40 @@ bun run --filter=barechat doc
 ```
 barechat/
 ├── packages/
-│   ├── cli/                 # Main CLI application
+│   ├── core/                # Core P2P chat networking package (barechat-core)
+│   │   ├── lib/            # Core chat-core.js library
+│   │   ├── test/           # Brittle unit tests
+│   │   ├── index.js        # Package entry point
+│   │   └── package.json    # Package configuration
+│   ├── cli/                 # Main CLI application (barechat)
 │   │   ├── bin/            # Executable scripts
-│   │   ├── lib/            # Core library files
-│   │   ├── openspec/        # OpenSpec specifications
+│   │   ├── lib/            # Helper, API constants, and RPC server
+│   │   ├── test/           # CLI & RPC tests
 │   │   ├── index.js        # Main entry point
 │   │   └── package.json    # Package configuration
-│   ├── web/                 # Web interface application
-│   │   ├── lib/            # Server and WebSocket logic
+│   ├── web/                 # Web interface application (barechat-web)
+│   │   ├── bin/            # Executable scripts
+│   │   ├── lib/            # HTTP Server and WebSocket bridge logic
 │   │   ├── ui/             # Web UI components
+│   │   ├── test/           # Integration tests
 │   │   ├── index.js        # Main entry point
 │   │   └── package.json    # Package configuration
-│   └── desktop/             # Pear Desktop application
-│       ├── index.html      # Main UI entry point
-│       ├── app.js          # Desktop application logic
+│   ├── desktop/             # Pear Desktop application (barechat-desktop)
+│   │   ├── index.html      # Main UI entry point
+│   │   ├── app.js          # Desktop application logic
+│   │   └── package.json    # Package configuration
+│   ├── mobile/              # React Native (Expo) & BareKit mobile app (barechat-mobile)
+│   │   ├── app/            # Expo Router screens
+│   │   ├── packages/       # BareKit worklet & RPC bridge
+│   │   └── package.json    # Package configuration
+│   └── rpc/                 # Terminal IPC via bare-rpc (barechat-rpc)
+│       ├── lib/            # RPCServer and RPCClient implementation
+│       ├── test/           # Example test scripts
+│       ├── index.js        # CLI entry point
 │       └── package.json    # Package configuration
-├── doc/                    # Documentation
-│   └── api.md             # API documentation
+├── openspec/               # OpenSpec specifications, architecture & deployment docs
+├── doc/                    # Generated API documentation
+│   └── api.md              # Core API documentation
 ├── bunfig.toml             # Bun configuration
 ├── package.json            # Root package.json (workspace config)
 └── README.md               # This file
@@ -165,16 +192,25 @@ barechat/
 
 - **Runtime**: Bare (JavaScript runtime for embedded systems)
 - **Package Manager**: Bun (with workspace support)
-- **Language**: ES Modules JavaScript
+- **Language**: ES Modules JavaScript / TypeScript (Mobile)
 - **Networking**: Hyperswarm (P2P network discovery)
 - **Desktop Platform**: Pear (P2P-first desktop development platform)
+- **Mobile Platform**: React Native (Expo) + `react-native-bare-kit`
+- **IPC / RPC**: `bare-rpc` over Unix domain sockets / BareKit IPC
 - **Cryptography**: Hypercore-crypto
 
 ## 📚 Documentation
 
-- **API Documentation**: See `doc/api.md`
-- **OpenSpec Specifications**: See `packages/cli/openspec/`
-- **Package-specific README**: See `packages/cli/README.md`
+- **API Documentation**: See [`doc/api.md`](doc/api.md)
+- **OpenSpec Specifications**: See [`openspec/`](openspec/project.md)
+- **Deployment Guide**: See [`openspec/deploy.md`](openspec/deploy.md)
+- **Package-specific READMEs**:
+  - [`packages/core/README.md`](packages/core/README.md)
+  - [`packages/cli/README.md`](packages/cli/README.md)
+  - [`packages/web/README.md`](packages/web/README.md)
+  - [`packages/desktop/README.md`](packages/desktop/README.md)
+  - [`packages/mobile/README.md`](packages/mobile/README.md)
+  - [`packages/rpc/README.md`](packages/rpc/README.md)
 
 ## 🤝 Contributing
 
@@ -186,7 +222,7 @@ barechat/
 
 ## 📄 License
 
-MIT License - see LICENSE file in packages/cli for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🔗 Related Projects
 

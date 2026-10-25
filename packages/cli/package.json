@@ -10,7 +10,7 @@
   "scripts": {
     "start": "bare index.js",
     "dev": "bare index.js",
-    "doc": "npx jsdoc-to-markdown ./lib/chat-core.js > ../../doc/api.md",
+    "doc": "npx jsdoc-to-markdown ../core/lib/chat-core.js > ../../doc/api.md",
     "clean": "rm -rf node_modules dist",
     "build": "echo 'No build step required for JavaScript'",
     "test": "echo 'No tests specified yet'"

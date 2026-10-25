@@ -83,12 +83,13 @@ returns it as-is. Otherwise, creates a SHA256 hash of the string.
 Creates a message object.
 
 **Kind**: global constant  
-**Returns**: <code>object</code> - A message object with a timestamp, message content, local flag, and type.  
+**Returns**: <code>object</code> - A message object with a timestamp, message content, local flag, and messageType.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | msg | <code>string</code> |  | The content of the message. |
 | [local] | <code>boolean</code> | <code>false</code> | Indicates whether the message is send from a local device.   Defaults to `false`. |
+| [messageType] | <code>string</code> | <code>&#x27;text&#x27;</code> | The type of the message. Defaults to `'text'`. |
 
 **Properties**
 
@@ -97,7 +98,7 @@ Creates a message object.
 | timestamp | <code>Date</code> | The date and time the message was created. |
 | message | <code>string</code> | The content of the message. |
 | local | <code>boolean</code> | Indicates if the message is send from a local device. |
-| type | <code>string</code> | The type of the message. Defaults to `text` |
+| messageType | <code>string</code> | The type of the message. Defaults to `'text'`. |
 
 <a name="getBackend"></a>
 
